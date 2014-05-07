@@ -1,0 +1,31 @@
+set number
+set tabstop=4 shiftwidth=4
+set textwidth=0
+set nobackup noswapfile
+
+set hlsearch noincsearch ignorecase
+
+set cindent
+set cinoptions=L0,:0,l1,g0,cs,C1,(s,m1
+set cinkeys-=0#
+set noshowmatch
+
+set laststatus=2
+set tabpagemax=32
+
+set list listchars=tab:^\ ,trail:_
+
+noremap <Up> <Nop>
+noremap <Down> <Nop>
+noremap <Left> :<C-u>tabprev<Return>
+noremap <Right> :<C-u>tabnext<Return>
+inoremap <Return> <Return>x<BS>
+nnoremap o ox<BS>
+nnoremap O Ox<BS>
+
+filetype plugin indent on
+syntax enable
+
+augroup misc
+  autocmd filetype * setlocal comments=
+augroup END

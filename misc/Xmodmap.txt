@@ -1,0 +1,8 @@
+keysym Muhenkan = Escape
+keysym Henkan_Mode = Zenkaku_Hankaku
+keysym Escape = Muhenkan
+keysym Zenkaku_Hankaku = Henkan_Mode
+
+remove Lock = Caps_Lock
+keysym Caps_Lock = Control_L
+add Control = Control_L

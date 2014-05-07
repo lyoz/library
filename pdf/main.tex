@@ -1,0 +1,348 @@
+\documentclass[landscape,twocolumn,9pt]{ltjsarticle}
+\usepackage{luatexja}
+\usepackage[top=11mm,bottom=13mm,left=10mm,right=10mm,headsep=1mm,footskip=7mm]{geometry}
+%\usepackage[top=10mm,bottom=10mm,left=10mm,right=10mm,headsep=0mm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{listings,color}
+\usepackage{fancyhdr}
+\usepackage{txfonts}
+
+% listings%{{{
+\lstdefinelanguage[Competitive]{C++}[GNU]{C++}{
+  morekeywords=[2]{
+    repi,peri,rep,per,foreach
+  }
+}
+\lstset{
+  language=[Competitive]C++,
+  basicstyle=\footnotesize\ttfamily,
+  directivestyle= \color[rgb]{0.40,0.40,0.40}\textbf, % #666666
+  keywordstyle=   \color[rgb]{0.00,0.40,0.60}\textbf, % #006699
+  keywordstyle=[2]\color[rgb]{0.40,0.00,0.60}\textbf, % #660099
+  commentstyle=   \color[rgb]{0.00,0.51,0.00},        % #008200
+  stringstyle=    \color[rgb]{0.00,0.00,1.00},        % #0000ff
+  showstringspaces=false,
+  frame=single,
+  framexleftmargin=18pt,
+  xleftmargin=18pt,
+  numbers=left,
+  numbersep=1em,
+  basewidth={0.54em,0.45em},
+  lineskip=-2pt,
+  tabsize=4,
+}
+%}}}
+
+% fancyhdr%{{{
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\renewcommand{\footruleskip}{0mm}
+\fancyhfoffset{9pt}
+
+\lhead{lyoz's library} \chead{} \rhead{}
+\lfoot{} \cfoot{} \rfoot{last modified: \the\year/\the\month/\the\day}
+%}}}
+
+\begin{document}
+
+\setlength{\abovedisplayskip}{1mm}
+\setlength{\belowdisplayskip}{1mm}
+
+\pagenumbering{roman}
+\rhead{\thepage}
+
+\tableofcontents
+\clearpage
+
+\pagenumbering{arabic}
+\rhead{\thepage}
+
+\section{環境}%{{{
+\subsection{.Xmodmap}
+［変換］と［半角/全角］，［無変換］と［Escape］を入れ替え，［CapsLock］を［Ctrl］に割り当てる．
+\lstinputlisting[language=]{../misc/Xmodmap.txt}
+
+\subsection{.vimrc}
+不要そうなものは適当に削る．
+\lstinputlisting[language=]{../misc/vimrc.txt}
+
+\subsection{Makefile}
+\lstinputlisting[language=]{../misc/Makefile.txt}
+%}}}
+
+\section{テンプレート}%{{{
+\subsection{C++}
+C++11なら\texttt{unordered\_set}，\texttt{unordered\_map}，\texttt{tuple}も追加する．
+\lstinputlisting{../misc/template.cpp}
+
+\subsection{Java}
+\texttt{Solver\#main}に書く．
+\lstinputlisting[language=Java]{../misc/template.java}
+%}}}
+
+\section{グラフ}%{{{
+
+\subsection{定義}
+\begin{table}[h]
+\begin{tabular}{ll}
+マッチング &端点を共有しない辺集合 \\
+独立集合   &どの2点も隣接しない頂点集合 \\
+クリーク   &どの2点も隣接している頂点集合 \\
+支配集合   &自身とその隣接頂点のみで全頂点を被覆する頂点集合 \\
+辺被覆     &どの頂点も少なくとも1つの辺に接続している辺集合 \\
+点被覆     &どの辺も少なくとも1つの頂点に接続している頂点集合 \\
+\end{tabular}
+\end{table}
+
+\subsection{定理}
+グラフ$G=(V,E)$について，
+\begin{align*}
+|最大マッチング|+|最小辺被覆|=|V| \\
+  |最大独立集合|+|最小点被覆|=|V|
+\end{align*}
+
+二部グラフであるとき，
+\begin{align*}
+|最大マッチング|=|最小点被覆| \\
+  |最大独立集合|=|最小辺被覆|
+\end{align*}
+
+\paragraph{Dilworthの定理・Mirskyの定理\\}\indent
+推移性をみたすDAGであるとき，
+\begin{center}\tabcolsep=0mm
+\begin{tabular}{rl}
+Dilworthの定理： &濃度最大の反鎖の濃度=個数最小の鎖被覆の個数 \\
+Mirskyの定理：   &濃度最大の鎖の濃度=個数最小の反鎖被覆の個数
+\end{tabular}
+\end{center}
+
+\paragraph{DAGの最小独立パス被覆}
+\[ \text{（最小独立パス被覆）}=|V|-\text{（$V+V'$を頂点とする二部グラフの最大マッチング）} \]
+
+DAGが推移性をもつとき，
+\[ \text{（最小独立パス被覆）}=\text{（最小パス被覆）} \]
+
+\subsection{基本要素}
+\lstinputlisting{../graph/graph.cpp}
+
+\subsection{単一始点最短路（Dijkstra）}
+計算量：$O(E\log V)$
+\lstinputlisting{../graph/dijkstra.cpp}
+
+\subsection{単一始点最短路（Bellman-Ford）}
+計算量：$O(VE)$
+\lstinputlisting{../graph/bellmanford.cpp}
+
+\subsection{全点間最短路（Warshall-Floyd）}
+計算量：$O(V^3)$
+\lstinputlisting{../graph/warshallfloyd.cpp}
+
+\subsection{最小全域木（Prim）}
+\texttt{root}を含む最小全域木を計算する．\texttt{tree}に構成辺を保存し，重みの総和を返す．
+
+計算量：$O(E\log V)$
+\lstinputlisting{../graph/prim.cpp}
+
+\subsection{最小全域森（Kruskal）}
+\texttt{forest}に構成辺を保存し，重みの総和を返す．
+
+計算量：$O(E\log V)$
+\lstinputlisting{../graph/kruskal.cpp}
+
+\subsection{最小シュタイナー木（Dreyfus-Wagner）}
+与えられた隣接行列とターミナルの集合に対し，最小シュタイナー木の重みの総和を返す．
+
+計算量：$O(3^TV+2^TV^2+V^3)$
+\lstinputlisting{../graph/dreyfuswagner.cpp}
+
+\subsection{最大独立集合}
+計算量：$O(1.466^n n)$
+\lstinputlisting{../graph/maxindependentset.cpp}
+
+\subsection{トポロジカルソート}
+計算量：$O(V+E)$
+\lstinputlisting{../graph/topologicalsort.cpp}
+
+\subsection{強連結成分分解}
+計算量：$O(V+E)$
+\lstinputlisting{../graph/scc.cpp}
+
+\subsection{橋}
+計算量：$O(V+E)$
+\lstinputlisting{../graph/bridge.cpp}
+
+\subsection{関節点}
+計算量：$O(V+E)$
+\lstinputlisting{../graph/articulation.cpp}
+
+\subsection{2-SAT}
+$u\lor v \Leftrightarrow(\overline u\to\overline v)\land(\overline v\to\overline u)$
+と式変形し，二項関係$\to$で辺を張り強連結成分分解する．強連結成分の真偽は一致するため，
+$x$と$\overline x$が同じ強連結成分に属するならば充足不能．そうでないならば充足可能．
+
+\subsection{最小共通先祖}
+計算量：構築$O(V \log V)$，クエリ$O(\log V)$
+\lstinputlisting{../graph/lca.cpp}
+
+\subsection{二部性判定}
+計算量：$O(V+E)$
+\lstinputlisting{../graph/isbipartite.cpp}
+%}}}
+
+\section{フロー}%{{{
+\subsection{最大流（Dinic）}
+計算量：$O(V^2E)$
+\lstinputlisting{../flow/dinic.cpp}
+
+\subsection{最小費用流}
+計算量：$O(FE\log V)$
+\lstinputlisting{../flow/mincostflow.cpp}
+
+\subsection{2部グラフの最大マッチング（na\"\i ve）}
+計算量：$O(VE)$
+\lstinputlisting{../flow/bipartitematching.cpp}
+
+\subsection{2部グラフの最大マッチング（Hopcroft-Karp）}
+計算量：$O(\sqrt{V}E)$
+\lstinputlisting{../flow/hopcroftkarp.cpp}
+
+\subsection{DAGの最小独立パス被覆}
+\lstinputlisting{../flow/minpathcover.cpp}
+
+\subsection{無向グラフの全域最小カット（Nagamochi-Ibaraki）}
+グラフが連結でないとき0を返す．
+計算量：$O(V^3)$
+\lstinputlisting{../flow/nagamochiibaraki.cpp}
+%}}}
+
+\section{文字列}%{{{
+\subsection{Knuth-Morris-Pratt}
+最短周期は\texttt{n-fail[n]}で求まる．
+
+計算量：テキスト長$N$，パターン長$M$として，初期化$O(M)$，検索$O(M+N)$
+\lstinputlisting{../string/kmp.cpp}
+
+\subsection{最長回文（Manacher）}
+計算量：$O(N)$
+\lstinputlisting{../string/longestpalindrome.cpp}
+
+\subsection{Suffix Array（K\"arkk\"ainen-Sanders）}
+計算量：構築$O(N)$，LCPの計算$O(N)$．
+\lstinputlisting{../string/kaerkkaeinensanders.cpp}
+
+\subsection{Suffix Array（SA-IS）}
+計算量：構築$O(N)$，LCPの計算$O(N)$．ただし$|\Sigma|=O(1)$とする．
+\lstinputlisting{../string/sais.cpp}
+%}}}
+
+\section{動的計画法}%{{{
+\subsection{最長共通部分列}
+計算量：$O(MN)$
+\lstinputlisting{../dp/lcs.cpp}
+
+\subsection{最長増加部分列}
+計算量：$O(N\log N)$．
+\lstinputlisting{../dp/lis.cpp}
+%}}}
+
+\section{データ構造}%{{{
+\subsection{Union-Find Tree}
+計算量：各操作に関して$O(\alpha(N))$．ただし$\alpha(N)$はアッカーマン関数の逆関数．
+\lstinputlisting{../datastructure/unionfind.cpp}
+
+\subsection{Fenwick Tree}
+計算量：各操作に関して$O(\log N)$
+\lstinputlisting{../datastructure/fenwicktree.cpp}
+
+\subsection{Segment Tree}
+計算量：初期化$O(N)$，更新$O(\log N)$，クエリ$O(\log N)$
+\lstinputlisting{../datastructure/segmenttree.cpp}
+
+\subsection{Range Tree}
+計算量：初期化$(O(N \log^2 N))$，クエリ$O(N \log^2 N)$
+\lstinputlisting{../datastructure/rangetree.cpp}
+%}}}
+
+\section{数学}%{{{
+\subsection{数学定数}
+\paragraph{円周率} \hspace{12.16mm}
+$ \pi=   3.1415926535897932384626433832795029 $
+\paragraph{自然対数の底} \hspace{2.66mm}
+$ e=     2.7182818284590452353602874713526625 $
+\paragraph{オイラーの定数}
+$ \gamma=0.5772156649015328606065120900824024 $
+
+\subsection{ユークリッドの互除法}
+\texttt{ExtendedGCD}は$ax+by=\gcd(a,b)$をみたす$x,y$を求める．
+計算量：$O(\log\max(a,b))$
+\lstinputlisting{../math/euclidian.cpp}
+
+\subsection{逆元}
+$ax\equiv 1\; (\mathrm{mod}\; m)$をみたす$x$を求める．
+逆元が存在しない場合は0を返す．
+\lstinputlisting{../math/modinverse.cpp}
+
+\subsection{エラトステネスの篩}
+計算量：$O(N\log\log N)$
+\lstinputlisting{../math/eratosthenes.cpp}
+
+\subsection{素数判定（Miller-Rabin）}
+問題によって実装を切り替える．
+\lstinputlisting{../math/millerrabin.cpp}
+
+\subsection{ガウスの消去法}
+解が一意でないとき\texttt{false}を返す．
+計算量：$O(N^3)$
+\lstinputlisting{../math/gauss.cpp}
+%}}}
+
+\section{幾何}%{{{
+\subsection{基本要素}
+\lstinputlisting{../geometry/geometry.cpp}
+
+\subsection{回転方向}
+\lstinputlisting{../geometry/ccw.cpp}
+
+\subsection{面積}
+\lstinputlisting{../geometry/area.cpp}
+
+\subsection{交差判定}
+\lstinputlisting{../geometry/intersect.cpp}
+
+\subsection{距離}
+\lstinputlisting{../geometry/distance.cpp}
+
+\subsection{円の接線}
+\lstinputlisting{../geometry/tangent.cpp}
+
+\subsection{凸包}
+計算量：$O(N\log N)$
+\lstinputlisting{../geometry/convexhull.cpp}
+
+\subsection{凸多角形の包含判定}
+\lstinputlisting{../geometry/cover.cpp}
+
+\subsection{凸多角形の切断}
+\lstinputlisting{../geometry/convexcut.cpp}
+
+\subsection{線分アレンジメント}
+同一線分上の推移的な辺を省略している．
+計算量：$O(N^3)$
+\lstinputlisting{../geometry/segmentarrangement.cpp}
+%}}}
+
+\section{その他}%{{{
+\subsection{ビット演算}
+\texttt{clz}，\texttt{clzll}，\texttt{ctz}，\texttt{ctzll}は，$x=0$のときビット長を返す．
+\lstinputlisting{../other/bitoperation.cpp}
+
+\subsection{Fairfieldの公式}
+西暦1年1月0日からの経過日数を求める．$\text{（経過日数）}\equiv 0\; (\mathrm{mod}\; 7)$のとき日曜日．
+\lstinputlisting{../other/fairfield.cpp}
+
+\subsection{さいころ}
+\lstinputlisting{../other/dice.cpp}
+%}}}
+
+\end{document}
