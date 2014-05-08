@@ -1,10 +1,10 @@
 // Verify: AOJ GRL_5_A, LOJ 1094
 
-pii DFS(const Graph& g,int u,int p)
+pii DFS(const Graph& g,int p,int v)
 {
-	pii res(0,u);
-	for(Edge e:g[u]) if(e.dst!=p){
-		pii t=DFS(g,e.dst,e.src);
+	pii res(0,v);
+	for(Edge e:g[v]) if(e.dst!=p){
+		pii t=DFS(g,e.src,e.dst);
 		t.first+=e.weight;
 		if(res.first<t.first) res=t;
 	}
@@ -14,7 +14,7 @@ pii DFS(const Graph& g,int u,int p)
 int Diameter(const Graph& g)
 {
 	int u,v,w;
-	tie(w,u)=DFS(g,0,-1);
-	tie(w,v)=DFS(g,u,-1);
+	tie(w,u)=DFS(g,-1,0);
+	tie(w,v)=DFS(g,-1,u);
 	return w;
 }
