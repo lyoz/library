@@ -337,6 +337,11 @@ $ax\equiv 1\; (\mathrm{mod}\; m)$をみたす$x$を求める．
 \texttt{clz}，\texttt{clzll}，\texttt{ctz}，\texttt{ctzll}は，$x=0$のときビット長を返す．
 \lstinputlisting{../other/bitoperation.cpp}
 
+\subsection{ハッシュ関数}
+\texttt{unordered\_set}や\texttt{unordered\_map}のキーとしてユーザ定義型を使うためには，
+\texttt{hash}の特殊化を書く必要がある．以下はFNV-1aによる実装例．
+\lstinputlisting{../other/hash.cpp}
+
 \subsection{Fairfieldの公式}
 西暦1年1月0日からの経過日数を求める．$\text{（経過日数）}\equiv 0\; (\mathrm{mod}\; 7)$のとき日曜日．
 \lstinputlisting{../other/fairfield.cpp}
