@@ -1,30 +1,22 @@
-// Verify: UVA 341
+// Verify: UVA 341, AOJ 0155
 
-void Dijkstra(const Graph& g,int begin,vi& cost,vi& prev)
+void Dijkstra(const Graph& g,int v,vi& dist,vi& prev)
 {
-	int size=g.size();
-	cost.assign(size,INFTY);
-	prev.assign(size,-1);
-	priority_queue<Edge,vector<Edge>,greater<Edge> > pq;
-	pq.push(Edge(-1,begin,0));
-	while(!pq.empty()){
+	priority_queue<Edge,vector<Edge>,greater<Edge>> pq;
+	pq.emplace(-1,v,0);
+	while(pq.size()){
 		Edge cur=pq.top(); pq.pop();
-		if(cost[cur.dst]!=INFTY)
-			continue;
-		cost[cur.dst]=cur.weight;
+		if(dist[cur.dst]!=INF) continue;
+		dist[cur.dst]=cur.weight;
 		prev[cur.dst]=cur.src;
-		foreach(e,g[cur.dst])
-			pq.push(Edge(e->src,e->dst,e->weight+cur.weight));
+		for(Edge e:g[cur.dst])
+			pq.emplace(e.src,e.dst,cur.weight+e.weight);
 	}
 }
 
-void BuildPath(const vi& prev,int begin,int end,vi& path)
+void BuildPath(const vi& prev,int v,vi& path)
 {
-	path.clear();
-	for(int i=end;;i=prev[i]){
-		path.push_back(i);
-		if(i==begin)
-			break;
-	}
+	for(int u=v;u!=-1;u=prev[u])
+		path.push_back(u);
 	reverse(all(path));
 }
