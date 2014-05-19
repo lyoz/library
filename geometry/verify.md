@@ -27,7 +27,7 @@
 	UVa 11068 (同一直線の場合について未検証)
 - bool IntersectLS(Line l,Segment s)
 - bool IntersectSS(Segment a,Segment b)
-	AOJ 1298, POJ 1127
+	AOJ CGL_2_B, AOJ 1298, POJ 1127
 - bool IntersectSP(Segment s,Point p)
 	AOJ 1279
 - int IntersectCC(Circle c1,Circle c2)

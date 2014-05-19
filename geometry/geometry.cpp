@@ -1,31 +1,50 @@
 const double PI=acos(-1);
 
 int Signum(double x){
-	return x<-EPS?-1:x<EPS?0:1;
+	return x<-EPS?-1:x>EPS?1:0;
 }
 
 struct Point{
 	double x,y;
 	Point(){}
 	Point(double x,double y):x(x),y(y){}
+	Point& operator+=(Point p){
+		x+=p.x,y+=p.y;
+		return *this;
+	}
+	Point& operator-=(Point p){
+		x-=p.x,y-=p.y;
+		return *this;
+	}
+	Point& operator*=(double c){
+		x*=c,y*=c;
+		return *this;
+	}
+	Point& operator/=(double c){
+		x/=c,y/=c;
+		return *this;
+	}
 };
+Point operator+(Point a,Point b){
+	return a+=b;
+}
+Point operator-(Point a,Point b){
+	return a-=b;
+}
+Point operator*(Point a,double c){
+	return a*=c;
+}
+Point operator*(double c,Point a){
+	return a*=c;
+}
+Point operator/(Point a,double c){
+	return a/=c;
+}
 bool operator==(Point a,Point b){
 	return abs(a.x-b.x)<EPS && abs(a.y-b.y)<EPS;
 }
 bool operator!=(Point a,Point b){
 	return !(a==b);
-}
-Point operator+(Point a,Point b){
-	return Point(a.x+b.x,a.y+b.y);
-}
-Point operator-(Point a,Point b){
-	return Point(a.x-b.x,a.y-b.y);
-}
-Point operator*(double c,Point p){
-	return Point(c*p.x,c*p.y);
-}
-Point operator/(Point p,double c){
-	return Point(p.x/c,p.y/c);
 }
 struct LessX{
 	bool operator()(Point a,Point b){
@@ -58,11 +77,20 @@ struct Line{
 	Line(Point p,Point d):pos(p),dir(d){}
 	Line(double px,double py,double dx,double dy):pos(px,py),dir(dx,dy){}
 };
-typedef Line Segment;
+
 Point Proj(Line l,Point p){
 	Point a=p-l.pos,b=l.dir;
 	return l.pos+Dot(a,b)/Abs2(b)*b;
 }
+
+struct Segment{
+	Point pos,dir;
+	Segment(){}
+	Segment(Point p,Point d):pos(p),dir(d){}
+	Segment(double px,double py,double dx,double dy):pos(px,py),dir(dx,dy){}
+	explicit Segment(Line l):pos(l.pos),dir(l.dir){}
+	explicit operator Line()const{return Line(pos,dir);}
+};
 
 struct Circle{
 	Point center;
