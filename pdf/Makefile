@@ -3,12 +3,13 @@ MAIN=main
 all: $(MAIN).pdf
 
 %.pdf: %.tex
-	lualatex $<
-	lualatex $<
+	platex $*
+	platex $*
+	dvipdfmx $*
 
 clean:
 	rm -f *.aux *.log *.toc
-#	rm -f *.pdf
+#	rm -f *.dvi *.pdf
 
 DIRS=datastructure dp flow geometry graph math misc other string
 $(MAIN).pdf: $(DIRS:%=../%/*)

@@ -1,9 +1,8 @@
-\documentclass[landscape,twocolumn,9pt]{ltjsarticle}
-\usepackage{luatexja}
+\documentclass[landscape,twocolumn,9pt]{jsarticle}
 \usepackage[top=11mm,bottom=13mm,left=10mm,right=10mm,headsep=1mm,footskip=7mm]{geometry}
 %\usepackage[top=10mm,bottom=10mm,left=10mm,right=10mm,headsep=0mm]{geometry}
 \usepackage{amsmath,amssymb}
-\usepackage{listings,color}
+\usepackage{listings,jlisting,color}
 \usepackage{fancyhdr}
 \usepackage{txfonts}
 
@@ -73,7 +72,6 @@
 
 \section{テンプレート}%{{{
 \subsection{C++}
-C++11なら\texttt{unordered\_set}，\texttt{unordered\_map}，\texttt{tuple}も追加する．
 \lstinputlisting{../misc/template.cpp}
 
 \subsection{Java}
@@ -338,7 +336,7 @@ $ax\equiv 1\; (\mathrm{mod}\; m)$をみたす$x$を求める．
 \lstinputlisting{../other/bitoperation.cpp}
 
 \subsection{ハッシュ関数}
-\texttt{unordered\_set}や\texttt{unordered\_map}のキーとしてユーザ定義型を使うためには，
+ユーザ定義型を\texttt{unordered\_set}や\texttt{unordered\_map}のキーとして使うためには，
 \texttt{hash}の特殊化を書く必要がある．以下はFNV-1aによる実装例．
 \lstinputlisting{../other/hash.cpp}
 
