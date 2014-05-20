@@ -46,11 +46,6 @@ bool operator==(Point a,Point b){
 bool operator!=(Point a,Point b){
 	return !(a==b);
 }
-struct LessX{
-	bool operator()(Point a,Point b){
-		return abs(a.x-b.x)>EPS?a.x<b.x-EPS:a.y<b.y-EPS;
-	}
-};
 
 double Abs(Point p){
 	return sqrt(p.x*p.x+p.y*p.y);
@@ -116,3 +111,10 @@ ostream& operator<<(ostream& os,const Line& l){
 ostream& operator<<(ostream& os,const Circle& c){
 	return os<<'('<<c.center.x<<','<<c.center.y<<','<<c.radius<<')';
 }
+
+// comparer
+struct LessX{
+	bool operator()(Point a,Point b){
+		return abs(a.x-b.x)>EPS?a.x<b.x-EPS:a.y<b.y-EPS;
+	}
+};

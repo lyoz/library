@@ -3,13 +3,13 @@
 
 ## ccw.cpp
 + int CCW(Point a,Point b,Point c)
-  - AOJ 1183
+  - AOJ CGL_1_C, AOJ 1183
 
 ## distance.cpp
 + double DistLP(Line l,Point p)
   - AOJ CGL_2_D, AOJ 2201, AOJ 2402
 + double DistSP(Segment s,Point p)
-	- AOJ CGL_2_D, AOJ 2402
+  - AOJ CGL_2_D, AOJ 2402
 + double DistLS(Line l,Segment s)
 + double DistSS(Segment a,Segment b)
   - AOJ CGL_2_D, AOJ 2402
@@ -21,6 +21,7 @@
   - AOJ 2201
 
 ## convexhull.cpp
++ bool IsConvex(const vector<Point>& ps)
 + vector<Point> ConvexHull(vector<Point> ps)
   - POJ 2007, POJ 2187, AOJ 1298
 
@@ -35,7 +36,7 @@
 ## intersect.cpp
 + bool IntersectLL(Line a,Line b)
   - UVa 11068
-	- 同一直線にある場合については未検証
+  - 同一直線にある場合については未検証
 + bool IntersectLS(Line l,Segment s)
 + bool IntersectSS(Segment a,Segment b)
   - AOJ CGL_2_B, AOJ CGL_2_D, AOJ 1298, AOJ 2402, POJ 1127
