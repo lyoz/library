@@ -26,14 +26,16 @@ int IntersectCC(Circle c1,Circle c2){
 }
 
 // aとbは必ず交差していること
+// 同一直線上にある場合，a.posを返す
 Point InterPointLL(Line a,Line b){
-	if(abs(Cross(a.dir,b.dir))<EPS)
-		return a.pos;
+	if(abs(Cross(a.dir,b.dir))<EPS) return a.pos;
 	return a.pos+Cross(b.pos-a.pos,b.dir)/Cross(a.dir,b.dir)*a.dir;
 }
+// 同一直線上にある場合，s.posを返す
 Point InterPointLS(Line l,Segment s){
-	return InterPointLL(s,l);
+	return InterPointLL(Line(s),l);
 }
+// 同一直線上にある場合，両端点を順に試し最初に交点であると判定されたものを返す
 Point InterPointSS(Segment a,Segment b){
 	if(abs(Cross(a.dir,b.dir))<EPS){
 		if(IntersectSP(b,a.pos)) return a.pos;
@@ -41,7 +43,7 @@ Point InterPointSS(Segment a,Segment b){
 		if(IntersectSP(a,b.pos)) return b.pos;
 		if(IntersectSP(a,b.pos+b.dir)) return b.pos+b.dir;
 	}
-	return InterPointLL(a,b);
+	return InterPointLL(Line(a),Line(b));
 }
 
 // c1とc2は必ず2点で交わること

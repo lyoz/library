@@ -2,10 +2,10 @@ double DistLP(Line l,Point p){
 	return Abs(Proj(l,p)-p);
 }
 double DistSP(Segment s,Point p){
-	int ccw=CCW(s.pos,s.pos+s.dir,Proj(s,p));
-	if(ccw==-2) return Abs(p-s.pos);
-	if(ccw== 2) return Abs(p-(s.pos+s.dir));
-	return DistLP(s,p);
+	int ccw=CCW(s.pos,s.pos+s.dir,Proj(Line(s),p));
+	if(ccw==-2) return Abs(s.pos-p);
+	if(ccw== 2) return Abs(s.pos+s.dir-p);
+	return DistLP(Line(s),p);
 }
 double DistLS(Line l,Segment s){
 	if(IntersectLS(l,s)) return 0;

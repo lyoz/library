@@ -6,5 +6,5 @@ int CCW(Point a,Point b,Point c){
 		return -2;   // c-a-b
 	if(Abs2(b)<Abs2(c)-EPS)
 		return 2;    // a-b-c
-	return 0;        // a-c-b
+	return 0;        // a-c-b (inclusive)
 }
