@@ -281,9 +281,10 @@ $ax\equiv 1\; (\mathrm{mod}\; m)$をみたす$x$を求める．
 逆元が存在しない場合は0を返す．
 \lstinputlisting{../math/modinverse.cpp}
 
-\subsection{エラトステネスの篩}
-計算量：$O(N\log\log N)$
-\lstinputlisting{../math/eratosthenes.cpp}
+\subsection{篩}
+エラトステネスの篩と，それを用いた区間篩．
+\paragraph{計算量} エラトステネスの篩：$O(N\log\log N)$，区間篩：$O(\sqrt b \log\log b+(b-a)\log\log b)$
+\lstinputlisting{../math/sieve.cpp}
 
 \subsection{素数判定（Miller-Rabin）}
 問題によって実装を切り替える．
