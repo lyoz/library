@@ -95,10 +95,10 @@
 
 \subsection{定理}
 グラフ$G=(V,E)$について，
-\begin{align*}
-|最大マッチング|+|最小辺被覆|=|V| \\
-  |最大独立集合|+|最小点被覆|=|V|
-\end{align*}
+\[ |最大独立集合|+|最小点被覆|=|V| \]
+
+孤立点がないとき，
+\[ |最大マッチング|+|最小辺被覆|=|V| \]
 
 二部グラフであるとき，
 \begin{align*}
@@ -125,53 +125,53 @@ DAGが推移性をもつとき，
 \lstinputlisting{../graph/graph.cpp}
 
 \subsection{単一始点最短路（Dijkstra）}
-計算量：$O(E\log V)$
+\paragraph{計算量} $O(E\log V)$
 \lstinputlisting{../graph/dijkstra.cpp}
 
 \subsection{単一始点最短路（Bellman-Ford）}
-計算量：$O(VE)$
+\paragraph{計算量} $O(VE)$
 \lstinputlisting{../graph/bellmanford.cpp}
 
 \subsection{全点間最短路（Warshall-Floyd）}
-計算量：$O(V^3)$
+\paragraph{計算量} $O(V^3)$
 \lstinputlisting{../graph/warshallfloyd.cpp}
 
 \subsection{最小全域木（Prim）}
 \texttt{root}を含む最小全域木を計算する．\texttt{tree}に構成辺を保存し，重みの総和を返す．
 
-計算量：$O(E\log V)$
+\paragraph{計算量} $O(E\log V)$
 \lstinputlisting{../graph/prim.cpp}
 
 \subsection{最小全域森（Kruskal）}
 \texttt{forest}に構成辺を保存し，重みの総和を返す．
 
-計算量：$O(E\log V)$
+\paragraph{計算量} $O(E\log V)$
 \lstinputlisting{../graph/kruskal.cpp}
 
 \subsection{最小シュタイナー木（Dreyfus-Wagner）}
 与えられた隣接行列とターミナルの集合に対し，最小シュタイナー木の重みの総和を返す．
 
-計算量：$O(3^TV+2^TV^2+V^3)$
+\paragraph{計算量} $O(3^TV+2^TV^2+V^3)$
 \lstinputlisting{../graph/dreyfuswagner.cpp}
 
 \subsection{最大独立集合}
-計算量：$O(1.466^n n)$
+\paragraph{計算量} $O(1.466^n n)$
 \lstinputlisting{../graph/maxindependentset.cpp}
 
 \subsection{トポロジカルソート}
-計算量：$O(V+E)$
+\paragraph{計算量} $O(V+E)$
 \lstinputlisting{../graph/topologicalsort.cpp}
 
 \subsection{強連結成分分解}
-計算量：$O(V+E)$
+\paragraph{計算量} $O(V+E)$
 \lstinputlisting{../graph/scc.cpp}
 
 \subsection{橋}
-計算量：$O(V+E)$
+\paragraph{計算量} $O(V+E)$
 \lstinputlisting{../graph/bridge.cpp}
 
 \subsection{関節点}
-計算量：$O(V+E)$
+\paragraph{計算量} $O(V+E)$
 \lstinputlisting{../graph/articulation.cpp}
 
 \subsection{2-SAT}
@@ -180,29 +180,29 @@ $u\lor v \Leftrightarrow(\overline u\to\overline v)\land(\overline v\to\overline
 $x$と$\overline x$が同じ強連結成分に属するならば充足不能．そうでないならば充足可能．
 
 \subsection{最小共通先祖}
-計算量：構築$O(V \log V)$，クエリ$O(\log V)$
+\paragraph{計算量} 構築$O(V \log V)$，クエリ$O(\log V)$
 \lstinputlisting{../graph/lca.cpp}
 
 \subsection{二部性判定}
-計算量：$O(V+E)$
+\paragraph{計算量} $O(V+E)$
 \lstinputlisting{../graph/isbipartite.cpp}
 %}}}
 
 \section{フロー}%{{{
 \subsection{最大流（Dinic）}
-計算量：$O(V^2E)$
+\paragraph{計算量} $O(V^2E)$
 \lstinputlisting{../flow/dinic.cpp}
 
 \subsection{最小費用流}
-計算量：$O(FE\log V)$
+\paragraph{計算量} $O(FE\log V)$
 \lstinputlisting{../flow/mincostflow.cpp}
 
 \subsection{2部グラフの最大マッチング（na\"\i ve）}
-計算量：$O(VE)$
+\paragraph{計算量} $O(VE)$
 \lstinputlisting{../flow/bipartitematching.cpp}
 
 \subsection{2部グラフの最大マッチング（Hopcroft-Karp）}
-計算量：$O(\sqrt{V}E)$
+\paragraph{計算量} $O(\sqrt{V}E)$
 \lstinputlisting{../flow/hopcroftkarp.cpp}
 
 \subsection{DAGの最小独立パス被覆}
@@ -210,7 +210,7 @@ $x$と$\overline x$が同じ強連結成分に属するならば充足不能．�
 
 \subsection{無向グラフの全域最小カット（Nagamochi-Ibaraki）}
 グラフが連結でないとき0を返す．
-計算量：$O(V^3)$
+\paragraph{計算量} $O(V^3)$
 \lstinputlisting{../flow/nagamochiibaraki.cpp}
 %}}}
 
@@ -218,47 +218,47 @@ $x$と$\overline x$が同じ強連結成分に属するならば充足不能．�
 \subsection{Knuth-Morris-Pratt}
 最短周期は\texttt{n-fail[n]}で求まる．
 
-計算量：テキスト長$N$，パターン長$M$として，初期化$O(M)$，検索$O(M+N)$
+\paragraph{計算量} テキスト長$N$，パターン長$M$として，初期化：$O(M)$，検索：$O(M+N)$．
 \lstinputlisting{../string/kmp.cpp}
 
 \subsection{最長回文（Manacher）}
-計算量：$O(N)$
+\paragraph{計算量} $O(N)$
 \lstinputlisting{../string/longestpalindrome.cpp}
 
 \subsection{Suffix Array（K\"arkk\"ainen-Sanders）}
-計算量：構築$O(N)$，LCPの計算$O(N)$．
+\paragraph{計算量} 構築：$O(N)$，LCP：$O(N)$．
 \lstinputlisting{../string/kaerkkaeinensanders.cpp}
 
 \subsection{Suffix Array（SA-IS）}
-計算量：構築$O(N)$，LCPの計算$O(N)$．ただし$|\Sigma|=O(1)$とする．
+\paragraph{計算量} 構築：$O(N)$，LCP：$O(N)$．ただし$|\Sigma|=O(1)$とする．
 \lstinputlisting{../string/sais.cpp}
 %}}}
 
 \section{動的計画法}%{{{
 \subsection{最長共通部分列}
-計算量：$O(MN)$
+\paragraph{計算量} $O(MN)$
 \lstinputlisting{../dp/lcs.cpp}
 
 \subsection{最長増加部分列}
-計算量：$O(N\log N)$．
+\paragraph{計算量} $O(N\log N)$．
 \lstinputlisting{../dp/lis.cpp}
 %}}}
 
 \section{データ構造}%{{{
 \subsection{Union-Find Tree}
-計算量：各操作に関して$O(\alpha(N))$．ただし$\alpha(N)$はアッカーマン関数の逆関数．
+\paragraph{計算量} 各操作に関して$O(\alpha(N))$．ただし$\alpha(N)$はアッカーマン関数の逆関数．
 \lstinputlisting{../datastructure/unionfind.cpp}
 
 \subsection{Fenwick Tree}
-計算量：各操作に関して$O(\log N)$
+\paragraph{計算量} 各操作に関して$O(\log N)$
 \lstinputlisting{../datastructure/fenwicktree.cpp}
 
 \subsection{Segment Tree}
-計算量：初期化$O(N)$，更新$O(\log N)$，クエリ$O(\log N)$
+\paragraph{計算量} 初期化：$O(N)$，更新：$O(\log N)$，クエリ：$O(\log N)$
 \lstinputlisting{../datastructure/segmenttree.cpp}
 
 \subsection{Range Tree}
-計算量：初期化$(O(N \log^2 N))$，クエリ$O(N \log^2 N)$
+\paragraph{計算量} 初期化：$(O(N \log^2 N))$，クエリ：$O(N \log^2 N)$
 \lstinputlisting{../datastructure/rangetree.cpp}
 %}}}
 
@@ -273,7 +273,7 @@ $ \gamma=0.5772156649015328606065120900824024 $
 
 \subsection{ユークリッドの互除法}
 \texttt{ExtendedGCD}は$ax+by=\gcd(a,b)$をみたす$x,y$を求める．
-計算量：$O(\log\max(a,b))$
+\paragraph{計算量} $O(\log\max(a,b))$
 \lstinputlisting{../math/euclidian.cpp}
 
 \subsection{逆元}
@@ -287,12 +287,11 @@ $ax\equiv 1\; (\mathrm{mod}\; m)$をみたす$x$を求める．
 \lstinputlisting{../math/sieve.cpp}
 
 \subsection{素数判定（Miller-Rabin）}
-問題によって実装を切り替える．
 \lstinputlisting{../math/millerrabin.cpp}
 
 \subsection{Gauss-Jordanの消去法}
 解が一意でないとき\texttt{false}を返す．
-計算量：$O(N^3)$
+\paragraph{計算量} $O(N^3)$
 \lstinputlisting{../math/gaussjordan.cpp}
 %}}}
 
@@ -316,7 +315,7 @@ $ax\equiv 1\; (\mathrm{mod}\; m)$をみたす$x$を求める．
 \lstinputlisting{../geometry/tangent.cpp}
 
 \subsection{凸包}
-計算量：$O(N\log N)$
+\paragraph{計算量} $O(N\log N)$
 \lstinputlisting{../geometry/convexhull.cpp}
 
 \subsection{凸多角形の包含判定}
@@ -327,7 +326,7 @@ $ax\equiv 1\; (\mathrm{mod}\; m)$をみたす$x$を求める．
 
 \subsection{線分アレンジメント}
 同一線分上の推移的な辺を省略している．
-計算量：$O(N^3)$
+\paragraph{計算量} $O(N^3)$
 \lstinputlisting{../geometry/segmentarrangement.cpp}
 %}}}
 
