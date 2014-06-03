@@ -3,7 +3,7 @@
 int Need(int x)
 {
 	x--;
-	rep(i,5) x|=x>>(1<<i);
+	for(int i=1;i<32;i*=2) x|=x>>i;
 	return x+1;
 }
 
@@ -31,6 +31,45 @@ struct SegmentTree{
 	}
 	int Query(int a,int b){
 		return Query(a,b,1,0,size);
+	}
+};
+
+// Query()で対応するインデックスを返す
+// Verify: Codeforces 434D
+
+struct SegmentTree{
+	const int I=numeric_limits<int>::lowest();
+	int F(int a,int b){return max(a,b);}
+	int size;
+	vi data; // data[0]=I, data[1..size):index, data[size..2*size):value
+	SegmentTree(int s):size(Need(s)),data(size*2,I){}
+	SegmentTree(const vi& a):size(Need(a.size())),data(size*2,I){
+		copy(all(a),begin(data)+size);
+		peri(i,1,size){
+			int u=i*2,v=i*2+1;
+			if(i*2<size) u=data[u],v=data[v];
+			data[i]=data[u]==F(data[u],data[v])?u:v;
+		}
+	}
+	int Get(int i){
+		return data[size+i];
+	}
+	void Update(int i,int x){
+		data[i+=size]=x;
+		while(i/=2){
+			int u=i*2,v=i*2+1;
+			if(i*2<size) u=data[u],v=data[v];
+			data[i]=data[u]==F(data[u],data[v])?u:v;
+		}
+	}
+	int Query(int a,int b,int i,int l,int r){
+		if(b<=l || r<=a) return 0;
+		if(a<=l && r<=b) return i<size?data[i]:i;
+		int u=Query(a,b,i*2,l,(l+r)/2),v=Query(a,b,i*2+1,(l+r)/2,r);
+		return data[u]==F(data[u],data[v])?u:v;
+	}
+	int Query(int a,int b){
+		return Query(a,b,1,0,size)-size;
 	}
 };
 
