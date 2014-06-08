@@ -8,44 +8,18 @@ struct Point{
 	double x,y;
 	Point(){}
 	Point(double x,double y):x(x),y(y){}
-	Point& operator+=(Point p){
-		x+=p.x,y+=p.y;
-		return *this;
-	}
-	Point& operator-=(Point p){
-		x-=p.x,y-=p.y;
-		return *this;
-	}
-	Point& operator*=(double c){
-		x*=c,y*=c;
-		return *this;
-	}
-	Point& operator/=(double c){
-		x/=c,y/=c;
-		return *this;
-	}
+	Point& operator+=(Point p){x+=p.x,y+=p.y; return *this;}
+	Point& operator-=(Point p){x-=p.x,y-=p.y; return *this;}
+	Point& operator*=(double c){x*=c,y*=c; return *this;}
+	Point& operator/=(double c){x/=c,y/=c; return *this;}
 };
-Point operator+(Point a,Point b){
-	return a+=b;
-}
-Point operator-(Point a,Point b){
-	return a-=b;
-}
-Point operator*(Point a,double c){
-	return a*=c;
-}
-Point operator*(double c,Point a){
-	return a*=c;
-}
-Point operator/(Point a,double c){
-	return a/=c;
-}
-bool operator==(Point a,Point b){
-	return abs(a.x-b.x)<EPS && abs(a.y-b.y)<EPS;
-}
-bool operator!=(Point a,Point b){
-	return !(a==b);
-}
+Point operator+(Point a,Point b){return a+=b;}
+Point operator-(Point a,Point b){return a-=b;}
+Point operator*(Point a,double c){return a*=c;}
+Point operator*(double c,Point a){return a*=c;}
+Point operator/(Point a,double c){return a/=c;}
+bool operator==(Point a,Point b){return abs(a.x-b.x)<EPS && abs(a.y-b.y)<EPS;}
+bool operator!=(Point a,Point b){return !(a==b);}
 
 double Abs(Point p){
 	return sqrt(p.x*p.x+p.y*p.y);
@@ -70,7 +44,7 @@ struct Line{
 	Point pos,dir;
 	Line(){}
 	Line(Point p,Point d):pos(p),dir(d){}
-	Line(double px,double py,double dx,double dy):pos(px,py),dir(dx,dy){}
+	Line(double x,double y,double u,double v):pos(x,y),dir(u,v){}
 };
 
 Point Proj(Line l,Point p){
@@ -82,7 +56,7 @@ struct Segment{
 	Point pos,dir;
 	Segment(){}
 	Segment(Point p,Point d):pos(p),dir(d){}
-	Segment(double px,double py,double dx,double dy):pos(px,py),dir(dx,dy){}
+	Segment(double x,double y,double u,double v):pos(x,y),dir(u,v){}
 	explicit Segment(Line l):pos(l.pos),dir(l.dir){}
 	explicit operator Line()const{return Line(pos,dir);}
 };
