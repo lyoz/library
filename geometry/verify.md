@@ -41,6 +41,7 @@
   - AOJ 2160
 + bool IntersectSS(Segment a,Segment b)
   - AOJ CGL_2_B, AOJ CGL_2_D, AOJ 1298, AOJ 2402, POJ 1127
+  - AOJ 1254 (CCWのa-c-bをexclusiveにした)
 + bool IntersectSP(Segment s,Point p)
   - AOJ 1279
 + int IntersectCC(Circle c1,Circle c2)
