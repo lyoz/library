@@ -1,75 +1,64 @@
-// headはvector<int>(頂点数,-1)で初期化されていること．
-// 典型的な問題では，グラフの各辺について
-//   AddEdge(es,head,src,dst,0,cap);
-//   AddEdge(es,head,src,dst,0,0);
-// と書く．
-// Verify: POJ 1459(141ms), POJ 3498(2625ms), SPOJ 4110(int->ll,2.81s), AOJ 2076(0.025s)
-//         UVa 10249(0.588s), COJ 1644(421ms)
+// Verify: AOJ 2076(0.19s), SPOJ 4110(int->ll,2.84s), UVa 10249(0.352s)
 
 struct Edge{
-	int src,dst,flow,capacity,next;
+	int src,dst,cap,flow;
 	Edge(){}
-	Edge(int s,int d,int f,int c,int n):src(s),dst(d),flow(f),capacity(c),next(n){}
+	Edge(int s,int d,int c,int f=0):src(s),dst(d),cap(c),flow(f){}
+};
+struct Graph{
+	vector<Edge> es;
+	vi head,next;
+	Graph(){}
+	Graph(int n):head(n,-1){}
+	// 有向辺を追加するとき逆辺の容量c2は普通0である．
+	// 両方向に容量があるならc2も指定する．
+	void AddEdge(int u,int v,int c1,int c2=0){
+		es.emplace_back(u,v,c1); next.push_back(head[u]); head[u]=es.size()-1;
+		es.emplace_back(v,u,c2); next.push_back(head[v]); head[v]=es.size()-1;
+	}
 };
 
-void AddEdge(vector<Edge>& es,vi& head,int src,int dst,int flow,int capacity)
+void BFS(const Graph& g,int tap,vi& layer)
 {
-	es.push_back(Edge(src,dst,flow,capacity,head[src]));
-	head[src]=es.size()-1;
-}
-
-vi BFS(const vector<Edge>& es,const vi& head,int begin)
-{
-	int size=head.size();
-	vi label(size,size);
-	queue<pii> q;
-	q.push(mp(begin,0));
+	queue<pii> q; q.emplace(tap,0);
 	while(q.size()){
-		pii cur=q.front(); q.pop();
-		if(label[cur.first]<=cur.second)
-			continue;
-		label[cur.first]=cur.second;
-		for(int i=head[cur.first];i!=-1;i=es[i].next)
-			if(es[i].capacity-es[i].flow>0)
-				q.push(mp(es[i].dst,cur.second+1));
+		int u,d; tie(u,d)=q.front(); q.pop();
+		if(layer[u]!=INF) continue;
+		layer[u]=d;
+		for(int i=g.head[u];i!=-1;i=g.next[i])
+			if(g.es[i].cap-g.es[i].flow>0)
+				q.emplace(g.es[i].dst,d+1);
 	}
-	return label;
 }
 
-int DFS(vector<Edge>& es,vi& head,int v,int end,const vi& label,int f)
+int DFS(Graph& g,int v,int sink,const vi& layer,int flow)
 {
-	if(v==end)
-		return f;
-	for(int& i=head[v];i!=-1;i=es[i].next){
-		Edge& e=es[i];
-		if(label[e.src]>=label[e.dst])
-			continue;
-		int residue=e.capacity-e.flow;
-		if(residue<=0)
-			continue;
-		int augment=DFS(es,head,e.dst,end,label,min(residue,f));
-		if(augment>0){
-			e.flow+=augment;
-			es[i^1].flow-=augment;
-			return augment;
-		}
+	if(v==sink) return flow;
+	int f=flow;
+	for(int& i=g.head[v];i!=-1;i=g.next[i]){
+		Edge& e=g.es[i];
+		if(layer[e.src]>=layer[e.dst]) continue;
+		int residue=e.cap-e.flow;
+		if(residue==0) continue;
+		int augment=DFS(g,e.dst,sink,layer,min(residue,f));
+		e.flow+=augment;
+		g.es[i^1].flow-=augment;
+		f-=augment;
+		if(f==0) break;
 	}
-	return 0;
+	return flow-f;
 }
 
-int Dinic(vector<Edge>& es,const vi& head,int begin,int end)
+int Dinic(Graph& g,int tap,int sink)
 {
-	int size=head.size();
-	for(;;){
-		vi label=BFS(es,head,begin);
-		if(label[end]==size)
-			break;
-		vi temp=head;
-		while(DFS(es,temp,begin,end,label,INFTY))
-			;
-	}
 	int res=0;
-	for(int i=head[begin];i!=-1;i=es[i].next)
-		res+=es[i].flow;
+	for(int n=g.head.size();;){
+		vi layer(n,INF);
+		BFS(g,tap,layer);
+		if(layer[sink]==INF) break;
+		vi temp=g.head;
+		res+=DFS(g,tap,sink,layer,INF);
+		swap(g.head,temp);
+	}
 	return res;
 }
