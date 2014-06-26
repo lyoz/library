@@ -34,7 +34,7 @@ struct SegmentTree{
 	}
 };
 
-// Query()で対応するインデックスを返す
+// QueryIndex()で対応するインデックスを返す
 // Verify: AOJ DSL_2_A
 
 struct SegmentTree{
