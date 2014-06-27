@@ -1,33 +1,35 @@
-// Verify: UVa 12299, POJ 3264, AOJ 1068
-
-int Need(int x)
+// 共通
+int NextPow2(int x)
 {
 	x--;
 	for(int i=1;i<32;i*=2) x|=x>>i;
 	return x+1;
 }
+const int I=numeric_limits<int>::max();
+int F(int a,int b){return min(a,b);}
+
+// 点更新/区間質問
+// Verify: UVa 12299, POJ 3264, AOJ 1068
 
 struct SegmentTree{
 	int size;
 	vi data;
-	SegmentTree(int s):size(Need(s)),data(size*2,INFTY){}
-	SegmentTree(const vi& a):size(Need(a.size())),data(size*2,INFTY){
-		copy(all(a),data.begin()+size);
-		for(int i=size;--i;)
-			data[i]=min(data[i*2],data[i*2+1]);
+	SegmentTree(int n):size(NextPow2(n)),data(size*2,I){}
+	SegmentTree(const vi& a):size(NextPow2(a.size())),data(size*2,I){
+		copy(all(a),begin(data)+size);
+		peri(i,1,size) data[i]=F(data[i*2],data[i*2+1]);
 	}
 	int Get(int i){
 		return data[size+i];
 	}
 	void Update(int i,int x){
 		data[size+i]=x;
-		for(i=(i+size)/2;i;i/=2)
-			data[i]=min(data[i*2],data[i*2+1]);
+		for(i+=size;i/=2;) data[i]=F(data[i*2],data[i*2+1]);
 	}
 	int Query(int a,int b,int i,int l,int r){
-		if(b<=l || r<=a) return INFTY;
+		if(b<=l || r<=a) return I;
 		if(a<=l && r<=b) return data[i];
-		return min(Query(a,b,i*2,l,(l+r)/2),Query(a,b,i*2+1,(l+r)/2,r));
+		return F(Query(a,b,i*2,l,(l+r)/2),Query(a,b,i*2+1,(l+r)/2,r));
 	}
 	int Query(int a,int b){
 		return Query(a,b,1,0,size);
@@ -38,47 +40,36 @@ struct SegmentTree{
 // Verify: AOJ DSL_2_A
 
 struct SegmentTree{
-	int I(){return numeric_limits<int>::max();}
-	int F(int a,int b){return min(a,b);}
 	int size;
-	vi data;
-	SegmentTree(int s):size(Need(s)),data(size*2,I()){
-		Build();
+	vi data,index;
+	SegmentTree(int n):size(NextPow2(n)),data(size,I),index(size*2){
+		iota(size+all(index),0);
+		peri(i,1,size) index[i]=index[i*2];
 	}
-	SegmentTree(const vi& a):size(Need(a.size())),data(size*2,I()){
-		copy(all(a),begin(data)+size);
-		Build();
-	}
-	void Build(){
+	SegmentTree(const vi& a):size(NextPow2(a.size())),data(size,I),index(size*2){
+		copy(all(a),begin(data));
+		iota(size+all(index),0);
 		peri(i,1,size){
-			int u=i*2,v=i*2+1;
-			if(v<size) u=data[u],v=data[v];
-			data[i]=data[u]==F(data[u],data[v])?u:v;
+			int u=index[i*2],v=index[i*2+1];
+			index[i]=data[u]==F(data[u],data[v])?u:v;
 		}
 	}
-	int Get(int i){
-		return data[size+i];
-	}
 	void Update(int i,int x){
-		data[i+=size]=x;
-		while(i/=2){
-			int u=i*2,v=i*2+1;
-			if(v<size) u=data[u],v=data[v];
-			data[i]=data[u]==F(data[u],data[v])?u:v;
+		data[i]=x;
+		for(i+=size;i/=2;){
+			int u=index[i*2],v=index[i*2+1];
+			index[i]=data[u]==F(data[u],data[v])?u:v;
 		}
 	}
 	int QueryIndex(int a,int b,int i,int l,int r){
-		if(b<=l || r<=a) return 0;
-		if(a<=l && r<=b) return i<size?data[i]:i;
+		if(b<=l || r<=a) return -1;
+		if(a<=l && r<=b) return index[i];
 		int u=QueryIndex(a,b,i*2,l,(l+r)/2),v=QueryIndex(a,b,i*2+1,(l+r)/2,r);
+		if(u==-1 || v==-1) return u!=-1?u:v;
 		return data[u]==F(data[u],data[v])?u:v;
 	}
 	int QueryIndex(int a,int b){
-		int res=QueryIndex(a,b,1,0,size);
-		return res==0?-1:res-size;
-	}
-	int Query(int a,int b){
-		return data[QueryIndex(a,b,1,0,size)];
+		return QueryIndex(a,b,1,0,size);
 	}
 };
 
@@ -88,30 +79,31 @@ struct SegmentTree{
 struct SegmentTree2D{
 	int size;
 	vector<SegmentTree> data;
-	SegmentTree2D(int h,int w):size(Need(h)),data(size*2,SegmentTree(w)){}
-	SegmentTree2D(const vvi& a):size(Need(a.size())),data(size*2,SegmentTree(a[0].size())){
-		copy(all(a),data.begin()+size);
-		for(int i=size;--i;)
-			repi(j,1,data[i].data.size())
-				data[i].data[j]=min(data[i*2].data[j],data[i*2+1].data[j]);
+	SegmentTree2D(int h,int w):size(NextPow2(h)),data(size*2,SegmentTree(w)){}
+	SegmentTree2D(const vvi& a):size(NextPow2(a.size())),data(size*2,SegmentTree(a[0].size())){
+		copy(all(a),begin(data)+size);
+		peri(i,1,size) repi(j,1,data[i].data.size())
+			data[i].data[j]=F(data[i*2].data[j],data[i*2+1].data[j]);
 	}
 	int Get(int i,int j){
 		return data[size+i].Get(j);
 	}
 	void Update(int i,int j,int x){
 		data[size+i].Update(j,x);
-		for(i=(i+size)/2;i;i/=2)
-			data[i].Update(j,min(data[i*2].Get(j),data[i*2+1].Get(j)));
+		for(i+=size;i/=2;)
+			data[i].Update(j,F(data[i*2].Get(j),data[i*2+1].Get(j)));
 	}
 	int Query(int a,int b,int c,int d,int i,int to,int bo){
-		if(c<=to || bo<=a) return INFTY;
+		if(c<=to || bo<=a) return I;
 		if(a<=to && bo<=c) return data[i].Query(b,d);
-		return min(Query(a,b,c,d,i*2,to,(to+bo)/2),Query(a,b,c,d,i*2+1,(to+bo)/2,bo));
+		return F(Query(a,b,c,d,i*2,to,(to+bo)/2),Query(a,b,c,d,i*2+1,(to+bo)/2,bo));
 	}
 	int Query(int a,int b,int c,int d){
 		return Query(a,b,c,d,1,0,size);
 	}
 };
+
+// ------------------------------ 以降は古い実装 ------------------------------
 
 // 区間更新/区間質問．PropagateとMergeを適切に書き換える
 // Verify: SPOJ 7259
@@ -229,5 +221,3 @@ struct SegmentTree{
 		return Query(a,b,1,0,size);
 	}
 };
-
-
