@@ -36,6 +36,7 @@ struct SegmentTree{
 	}
 };
 
+// 点更新/区間質問
 // QueryIndex()で対応するインデックスを返す
 // Verify: AOJ DSL_2_A
 
@@ -73,7 +74,7 @@ struct SegmentTree{
 	}
 };
 
-// 2次元版
+// 点更新/区間質問 (2次元版)
 // Verify: AOJ 1068
 
 struct SegmentTree2D{
@@ -100,6 +101,35 @@ struct SegmentTree2D{
 	}
 	int Query(int a,int b,int c,int d){
 		return Query(a,b,c,d,1,0,size);
+	}
+};
+
+// 区間更新/点質問
+// Verify: ARC026 C
+
+struct SegmentTree{
+	int size;
+	vi data;
+	SegmentTree(int n):size(NextPow2(n)),data(size*2,I){}
+	SegmentTree(const vi& a):size(NextPow2(a.size())),data(size*2,I){
+		copy(all(a),begin(data)+size);
+	}
+	void Update(int a,int b,int x,int i,int l,int r){
+		if(b<=l || r<=a) return;
+		if(a<=l && r<=b){
+			data[i]=F(data[i],x);
+			return;
+		}
+		Update(a,b,x,i*2+0,l,(l+r)/2);
+		Update(a,b,x,i*2+1,(l+r)/2,r);
+	}
+	void Update(int a,int b,int x){
+		Update(a,b,x,1,0,size);
+	}
+	int Query(int i){
+		int res=I;
+		for(i+=size;i;i/=2) res=F(res,data[i]);
+		return res;
 	}
 };
 
