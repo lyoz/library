@@ -47,6 +47,12 @@ struct Line{
 	Line(double x,double y,double u,double v):pos(x,y),dir(u,v){}
 };
 
+bool Orthogonal(Line a,Line b){
+	return abs(Dot(a.dir,b.dir))<EPS;
+}
+bool Parallel(Line a,Line b){
+	return abs(Cross(a.dir,b.dir))<EPS;
+}
 Point Proj(Line l,Point p){
 	Point a=p-l.pos,b=l.dir;
 	return l.pos+Dot(a,b)/Abs2(b)*b;
@@ -81,6 +87,9 @@ ostream& operator<<(ostream& os,const Point& p){
 }
 ostream& operator<<(ostream& os,const Line& l){
 	return os<<'('<<l.pos<<','<<l.dir<<')';
+}
+ostream& operator<<(ostream& os,const Segment& s){
+	return os<<'('<<s.pos<<','<<s.dir<<')';
 }
 ostream& operator<<(ostream& os,const Circle& c){
 	return os<<'('<<c.center.x<<','<<c.center.y<<','<<c.radius<<')';

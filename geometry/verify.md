@@ -39,6 +39,8 @@
   - 同一直線にある場合については未検証
 + bool IntersectLS(Line l,Segment s)
   - AOJ 2160
++ bool IntersectLP(Line l,Point p)
+  - AOJ 2167
 + bool IntersectSS(Segment a,Segment b)
   - AOJ CGL_2_B, AOJ CGL_2_D, AOJ 1298, AOJ 2402, POJ 1127
   - AOJ 1254 (CCWのa-c-bをexclusiveにした)
@@ -62,3 +64,7 @@
 ## segmentarrangement.cpp
 + void SegmentArrangement(const vector<Segment>& ss,Graph& g,vector<Point>& ps)
   - AOJ 1279
+
+## equidistantline.cpp
++ vector<Line> EquidistantLine(Line a,Line b)
+  - AOJ 2167

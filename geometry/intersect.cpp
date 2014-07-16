@@ -5,6 +5,9 @@ bool IntersectLS(Line l,Segment s){
 	Point a=s.pos-l.pos,b=s.pos+s.dir-l.pos;
 	return Signum(Cross(l.dir,a))*Signum(Cross(l.dir,b))<=0;
 }
+bool IntersectLP(Line l,Point p){
+	return abs(CCW(l.pos,l.pos+l.dir,p))!=1;
+}
 bool IntersectSS(Segment a,Segment b){
 	int c1=CCW(a.pos,a.pos+a.dir,b.pos),c2=CCW(a.pos,a.pos+a.dir,b.pos+b.dir);
 	int c3=CCW(b.pos,b.pos+b.dir,a.pos),c4=CCW(b.pos,b.pos+b.dir,a.pos+a.dir);
