@@ -1,6 +1,5 @@
 \documentclass[landscape,twocolumn,9pt]{jsarticle}
-\usepackage[top=11mm,bottom=13mm,left=10mm,right=10mm,headsep=1mm,footskip=7mm]{geometry}
-%\usepackage[top=10mm,bottom=10mm,left=10mm,right=10mm,headsep=0mm]{geometry}
+\usepackage[top=10mm,bottom=10mm,left=10mm,right=10mm,headsep=1mm,footskip=6mm]{geometry}
 \usepackage{amsmath,amssymb}
 \usepackage{listings,jlisting,color}
 \usepackage{fancyhdr}
@@ -28,7 +27,7 @@
   numbersep=1em,
   basewidth={0.54em,0.45em},
   lineskip=-2pt,
-  tabsize=4,
+  tabsize=2,
 }
 %}}}
 
@@ -311,6 +310,9 @@ $ax\equiv 1\; (\mathrm{mod}\; m)$をみたす$x$を求める．
 \subsection{距離}
 \lstinputlisting{../geometry/distance.cpp}
 
+\subsection{2直線から等距離な点集合}
+\lstinputlisting{../geometry/equidistantline.cpp}
+
 \subsection{円の接線}
 \lstinputlisting{../geometry/tangent.cpp}
 
@@ -334,6 +336,9 @@ $ax\equiv 1\; (\mathrm{mod}\; m)$をみたす$x$を求める．
 \subsection{ビット演算}
 \texttt{clz}，\texttt{clzll}，\texttt{ctz}，\texttt{ctzll}は，$x=0$のときビット長を返す．
 \lstinputlisting{../other/bitoperation.cpp}
+
+\subsection{\texttt{priority\_queue}のヘルパ関数}
+\lstinputlisting{../other/make_priority_queue.cpp}
 
 \subsection{ハッシュ関数}
 ユーザ定義型を\texttt{unordered\_set}や\texttt{unordered\_map}のキーとして使うためには，

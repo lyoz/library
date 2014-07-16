@@ -3,9 +3,9 @@
 template<typename Functor>
 struct functor_traits{
 	template<typename C,typename Ret,typename Arg,typename... Args>
-		static Arg helper(Ret(C::*)(Arg,Args...));
+	static Arg helper(Ret(C::*)(Arg,Args...));
 	template<typename C,typename Ret,typename Arg,typename... Args>
-		static Arg helper(Ret(C::*)(Arg,Args...)const);
+	static Arg helper(Ret(C::*)(Arg,Args...)const);
 	using first_argument_type=decltype(helper(&Functor::operator()));
 };
 
