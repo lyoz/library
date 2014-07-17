@@ -27,18 +27,18 @@
 
 ## convexcut.cpp
 + vector<Point> ConvexCut(const vector<Point>& ps,Line l)
-  - AOJ 1089, AOJ 1267, AOJ 1283, AOJ 2160, UVa 609, UVa 10117
+  - AOJ 1089, AOJ 1267, AOJ 1283, AOJ 2160, AOJ 2385, UVa 609, UVa 10117
 
 ## area.cpp
 + double Area(const vector<Point>& ps)
-  - AOJ 1089, AOJ 2160, UVa 10117
+  - AOJ 1089, AOJ 2160, AOJ 2385, UVa 10117
 
 ## intersect.cpp
 + bool IntersectLL(Line a,Line b)
-  - AOJ 2160, UVa 11068
+  - AOJ 2160, AOJ 2385, UVa 11068
   - 同一直線にある場合については未検証
 + bool IntersectLS(Line l,Segment s)
-  - AOJ 2160
+  - AOJ 2160, AOJ 2385
 + bool IntersectLP(Line l,Point p)
   - AOJ 2167
 + bool IntersectSS(Segment a,Segment b)
