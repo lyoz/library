@@ -1,4 +1,4 @@
-// Verify: AOJ GRL_5_C
+// Verify: AOJ GRL_5_C, ABC 014 D
 
 // by Doubling, O(n log n)-space
 struct LCA{
@@ -30,12 +30,11 @@ struct LCA{
 
 // by RMQ, O(n)-space
 struct LCA{
-	vi tour,fs;
-	SegmentTree st;
-	LCA(const Graph& g,int root):fs(g.size(),INF),st(1){
-		vi ds;
+	vi tour,fs,ds;
+	SegmentTree st; // I=INF,F=min
+	LCA(const Graph& g,int root):fs(g.size(),-1),st(1){
 		DFS(g,-1,root,0,ds);
-		rep(i,tour.size()) if(fs[tour[i]]==INF) fs[tour[i]]=i;
+		rep(i,tour.size()) if(fs[tour[i]]==-1) fs[tour[i]]=i;
 		st=SegmentTree(ds);
 	}
 	void DFS(const Graph& g,int p,int v,int d,vi& ds){
@@ -50,5 +49,8 @@ struct LCA{
 	int Find(int u,int v){
 		if(fs[u]>fs[v]) swap(u,v);
 		return tour[st.QueryIndex(fs[u],fs[v]+1)];
+	}
+	int Depth(int v){
+		return ds[fs[v]];
 	}
 };

@@ -5,7 +5,7 @@ int NextPow2(int x)
 	for(int i=1;i<32;i*=2) x|=x>>i;
 	return x+1;
 }
-const int I=numeric_limits<int>::max();
+const int I=INF;
 int F(int a,int b){return min(a,b);}
 
 // 点更新/区間質問
