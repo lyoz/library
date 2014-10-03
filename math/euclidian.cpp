@@ -11,7 +11,7 @@ int LCM(int a,int b)
 int ExtendedGCD(int a,int b,int& x,int& y)
 {
 	if(b==0){
-		x=1; y=0;
+		x=1,y=0;
 		return a;
 	}
 	else{
