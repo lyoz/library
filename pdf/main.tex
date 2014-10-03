@@ -292,6 +292,17 @@ $ax\equiv 1\; (\mathrm{mod}\; m)$をみたす$x$を求める．
 解が一意でないとき\texttt{false}を返す．
 \paragraph{計算量} $O(N^3)$
 \lstinputlisting{../math/gaussjordan.cpp}
+
+\subsection{高速ゼータ/メビウス変換}
+\begin{align*}
+\text{ゼータ変換}:   f(S)&=\sum_{T\subseteq S} g(T)\\
+\text{メビウス変換}: g(S)&=\sum_{T\subseteq S} (-1)^{|S|-|T|}f(T)
+\end{align*}
+包除原理は
+$f(S)=\left|\bigcap_{i\in S}A_i\right|$, $g(S)=-(-1)^{|S|}\left|\bigcup_{i\in S}A_i\right|$
+として，$|g(S)|$を求めることに相当する．
+\paragraph{計算量} $O(N 2^N)$
+\lstinputlisting{../math/zetamoebius.cpp}
 %}}}
 
 \section{幾何}%{{{
