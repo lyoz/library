@@ -1,21 +1,18 @@
-// Verify: AOJ 0180, POJ 1287, POJ 1861
+// Verify: AOJ 0180, POJ 1861
 
 int Kruskal(const Graph& g,vector<Edge>& forest)
 {
-	forest.clear();
-	
+	int n=g.size();
 	vector<Edge> es;
-	rep(i,g.size()) rep(j,g[i].size())
-		es.push_back(g[i][j]);
+	rep(i,n) es.insert(end(es),all(g[i]));
 	sort(all(es));
 	
-	UnionFind uf(g.size());
+	UnionFind uf(n);
 	int res=0;
-	rep(i,es.size())
-		if(uf.Find(es[i].src)!=uf.Find(es[i].dst)){
-			uf.Unite(es[i].src,es[i].dst);
-			res+=es[i].weight;
-			forest.push_back(es[i]);
+	for(auto e:es)
+		if(uf.Unite(e.src,e.dst)){
+			res+=e.weight;
+			forest.push_back(e);
 		}
 	return res;
 }

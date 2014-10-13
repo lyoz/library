@@ -1,21 +1,20 @@
-// Verify: PKU 2524, PKU 1182
+// Verify: AOJ 0180, POJ 1861, PKU 2524, PKU 1182
 
 struct UnionFind{
 	vi data;
-	UnionFind(int size):data(size,-1){}
-	int Find(int n){
-		return data[n]<0?n:(data[n]=Find(data[n]));
+	UnionFind(int n):data(n,-1){}
+	int Find(int i){
+		return data[i]<0?i:(data[i]=Find(data[i]));
 	}
-	void Unite(int a,int b){
-		int ra=Find(a),rb=Find(b);
-		if(ra!=rb){
-			if(-data[ra]<-data[rb])
-				swap(ra,rb);
-			data[ra]+=data[rb];
-			data[rb]=ra;
-		}
+	bool Unite(int a,int b){
+		a=Find(a),b=Find(b);
+		if(a==b) return false;
+		if(-data[a]<-data[b]) swap(a,b);
+		data[a]+=data[b];
+		data[b]=a;
+		return true;
 	}
-	int Size(int n){
-		return -data[Find(n)];
+	int Size(int i){
+		return -data[Find(i)];
 	}
 };
