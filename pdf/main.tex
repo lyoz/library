@@ -346,22 +346,22 @@ $f(S)=\left|\bigcap_{i\in S}A_i\right|$, $g(S)=-(-1)^{|S|}\left|\bigcup_{i\in S}
 \section{その他}%{{{
 \subsection{ビット演算}
 \texttt{clz}，\texttt{clzll}，\texttt{ctz}，\texttt{ctzll}は，$x=0$のときビット長を返す．
-\lstinputlisting{../other/bitoperation.cpp}
+\lstinputlisting{../misc/bitoperation.cpp}
 
 \subsection{\texttt{priority\_queue}のヘルパ関数}
-\lstinputlisting{../other/make_priority_queue.cpp}
+\lstinputlisting{../misc/make_priority_queue.cpp}
 
 \subsection{ハッシュ関数}
 ユーザ定義型を\texttt{unordered\_set}や\texttt{unordered\_map}のキーとして使うためには，
 \texttt{hash}の特殊化を書く必要がある．以下はFNV-1aによる実装例．
-\lstinputlisting{../other/hash.cpp}
+\lstinputlisting{../misc/hash.cpp}
 
 \subsection{Fairfieldの公式}
 西暦1年1月0日からの経過日数を求める．$\text{（経過日数）}\equiv 0\; (\mathrm{mod}\; 7)$のとき日曜日．
-\lstinputlisting{../other/fairfield.cpp}
+\lstinputlisting{../misc/fairfield.cpp}
 
 \subsection{さいころ}
-\lstinputlisting{../other/dice.cpp}
+\lstinputlisting{../misc/dice.cpp}
 %}}}
 
 \end{document}

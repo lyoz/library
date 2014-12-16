@@ -11,5 +11,5 @@ clean:
 	rm -f *.aux *.log *.toc
 #	rm -f *.dvi *.pdf
 
-DIRS=datastructure dp flow geometry graph math misc other string
+DIRS=datastructure dp flow geometry graph math misc string
 $(MAIN).pdf: $(DIRS:%=../%/*)
