@@ -1,36 +1,33 @@
-// Verify: [ctor] POJ 1961, POJ 2406, [MatchAll] POJ 3461, LOJ 1255, SPOJ 32
+// Verify: [ctor] POJ 1961, POJ 2406
+//         [Matches] POJ 3461, LOJ 1255, SPOJ 32, SPOJ 1218
 
 struct KMP{
-	string pat;
-	vi fail;
-	KMP(const string& p):pat(p),fail(p.size()+1){
-		fail[0]=-1;
-		for(int i=0,j=-1;i<pat.size();){
-			while(j>=0 && pat[i]!=pat[j])
-				j=fail[j];
+	string p;
+	vi fs;
+	KMP(const string& p):p(p),fs(p.size()+1){
+		for(int i=0,j=fs[0]=-1;i<p.size();){
+			while(j>=0 && p[i]!=p[j]) j=fs[j];
 			i++,j++;
-			fail[i]=j;
+			//fs[i]=j; // Morris-Pratt
+			fs[i]=i<p.size()&&p[i]==p[j]?fs[j]:j;
 		}
 	}
-	int Match(const string& text){
-		for(int i=0,j=0;i<text.size();){
-			while(j>=0 && text[i]!=pat[j])
-				j=fail[j];
+	int Match(const string& s){
+		for(int i=0,j=0;i<s.size();){
+			while(j>=0 && s[i]!=p[j]) j=fs[j];
 			i++,j++;
-			if(j==pat.size())
-				return i-j;
+			if(j==p.size()) return i-j;
 		}
 		return -1;
 	}
-	vi MatchAll(const string& text){
+	vi Matches(const string& s){
 		vi res;
-		for(int i=0,j=0;i<text.size();){
-			while(j>=0 && text[i]!=pat[j])
-				j=fail[j];
+		for(int i=0,j=0;i<s.size();){
+			while(j>=0 && s[i]!=p[j]) j=fs[j];
 			i++,j++;
-			if(j==pat.size()){
+			if(j==p.size()){
 				res.push_back(i-j);
-				j=fail[j];
+				j=fs[j];
 			}
 		}
 		return res;
