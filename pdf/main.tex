@@ -277,10 +277,10 @@ $ \gamma=0.5772156649015328606065120900824024 $
 \paragraph{計算量} $O(\log\max(a,b))$
 \lstinputlisting{../math/euclidian.cpp}
 
-\subsection{逆元}
-$ax\equiv 1\; (\mathrm{mod}\; m)$をみたす$x$を求める．
-逆元が存在しない場合は0を返す．
-\lstinputlisting{../math/modinverse.cpp}
+\subsection{mod演算}
+$a^r,a^{-1}\pmod{m}$を求める．
+$a,m$が互いに素でないとき，$a^{-1}$の代わりに$ax\equiv1\pmod{\gcd(a,m)}$を満たす$x$を求める．
+\lstinputlisting{../math/modoperation.cpp}
 
 \subsection{篩}
 エラトステネスの篩と，それを用いた区間篩．
