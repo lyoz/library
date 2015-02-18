@@ -361,6 +361,10 @@ $f(S)=\left|\bigcap_{i\in S}A_i\right|$, $g(S)=-(-1)^{|S|}\left|\bigcup_{i\in S}
 \subsection{Fairfieldの公式}
 西暦1年1月0日からの経過日数を求める．$\text{（経過日数）}\equiv 0\; (\mathrm{mod}\; 7)$のとき日曜日．
 \lstinputlisting{../misc/fairfield.cpp}
+
+\subsection{疑似乱数}
+Xorshift法による疑似乱数と，\texttt{std::*\_distribution}のバックエンドにするためのラッパー．
+\lstinputlisting{../misc/random.cpp}
 %}}}
 
 \end{document}
