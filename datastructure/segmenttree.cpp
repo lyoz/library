@@ -133,6 +133,48 @@ struct SegmentTree{
 	}
 };
 
+// 区間add/区間min
+// Verify: KOJ 0093
+
+template<typename T>
+struct SegmentTree{
+	int size;
+	vector<T> data,pdata;
+	SegmentTree(int n):size(NextPow2(n)),data(2*size),pdata(2*size){}
+	SegmentTree(const vector<T>& a):size(NextPow2(a.size())),data(2*size),pdata(2*size){
+		copy(all(a),size+begin(data));
+		peri(i,1,size) data[i]=min(data[2*i],data[2*i+1]);
+	}
+	void Propagate(int i){
+		if(i<size){
+			pdata[2*i]+=pdata[i];
+			pdata[2*i+1]+=pdata[i];
+		}
+		data[i]+=pdata[i];
+		pdata[i]=0;
+	}
+	void Update(int ql,int qr,T x,int i,int l,int r){
+		Propagate(i);
+		if(qr<=l || r<=ql) return;
+		if(ql<=l && r<=qr){
+			pdata[i]=x;
+			Propagate(i);
+			return;
+		}
+		Update(ql,qr,x,2*i,l,(l+r)/2);
+		Update(ql,qr,x,2*i+1,(l+r)/2,r);
+		data[i]=min(data[2*i],data[2*i+1]);
+	}
+	T Query(int ql,int qr,int i,int l,int r){
+		Propagate(i);
+		if(qr<=l || r<=ql) return INF;
+		if(ql<=l && r<=qr) return data[i];
+		return min(Query(ql,qr,2*i,l,(l+r)/2),Query(ql,qr,2*i+1,(l+r)/2,r));
+	}
+	void Update(int ql,int qr,T x){Update(ql,qr,x,1,0,size);}
+	T Query(int ql,int qr){return Query(ql,qr,1,0,size);}
+};
+
 // ------------------------------ 以降は古い実装 ------------------------------
 
 // 区間更新/区間質問．PropagateとMergeを適切に書き換える
