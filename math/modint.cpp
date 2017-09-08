@@ -12,13 +12,13 @@ struct modint{
 		return x;
 	}
 	modint inv()const{
-		unsigned x=1;
-		for(unsigned a=val,b=M,u=0;b;){
+		ll x=1;
+		for(ll a=val,b=M,u=0;b;){
 			ll t=a/b;
 			swap(a-=b*t,b);
 			swap(x-=u*t,u);
 		}
-		return x;
+		return (x+M)%M;
 	}
 	modint& operator=(const modint& x)&{val=x.val; return *this;}
 	modint& operator+=(const modint& x)&{if((val+=x.val)>=M) val-=M; return *this;}
