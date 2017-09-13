@@ -1,40 +1,25 @@
-// Verify: UVA 341
+// Verify: ABC061 Problem D
 
-bool BellmanFord(const Graph& g,int begin,vi& cost,vi& prev)
+// dist(n,INF),prev(n,-1)で初期化しておくこと
+bool BellmanFord(const Graph& g,int src,vi& dist,vi& prev)
 {
-	int size=g.size();
-	cost.assign(size,INFTY);
-	prev.assign(size,-1);
-	
-	cost[begin]=0;
-	rep(k,size-1){
-		rep(i,size){
-			rep(j,g[i].size()){
-				Edge cand=g[i][j]; // candidate
-				if(cost[cand.dst]>cost[i]+cand.weight){
-					cost[cand.dst]=cost[i]+cand.weight;
-					prev[cand.dst]=cand.src;
-				}
+	int n=g.size();
+	dist[src]=0;
+	rep(k,n-1)
+		rep(u,n) for(auto e:g[u])
+			if(dist[e.dst]>dist[e.src]+e.weight){
+				dist[e.dst]=dist[e.src]+e.weight;
+				prev[e.dst]=u;
 			}
-		}
-	}
-	rep(i,size){
-		rep(j,g[i].size()){
-			Edge cand=g[i][j]; // candidate
-			if(cost[cand.dst]>cost[j]+cand.weight)
-				return false;
-		}
-	}
+	rep(u,n) for(auto e:g[u])
+		if(dist[e.dst]>dist[e.src]+e.weight)
+			return false;
 	return true;
 }
 
-void BuildPath(const vi& prev,int begin,int end,vi& path)
+void BuildPath(const vi& prev,int dst,vi& path)
 {
-	path.clear();
-	for(int i=end;;i=prev[i]){
-		path.push_back(i);
-		if(i==begin)
-			break;
-	}
+	for(int v=dst;v!=-1;v=prev[v])
+		path.push_back(v);
 	reverse(all(path));
 }

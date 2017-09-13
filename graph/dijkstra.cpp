@@ -1,9 +1,10 @@
 // Verify: UVA 341, AOJ 0155
 
-void Dijkstra(const Graph& g,int v,vi& dist,vi& prev)
+// dist(n,INF),prev(n,-1)で初期化しておくこと
+void Dijkstra(const Graph& g,int src,vi& dist,vi& prev)
 {
 	priority_queue<Edge,vector<Edge>,greater<Edge>> pq;
-	pq.emplace(-1,v,0);
+	pq.emplace(-1,src,0);
 	while(pq.size()){
 		Edge cur=pq.top(); pq.pop();
 		if(dist[cur.dst]!=INF) continue;
@@ -14,9 +15,9 @@ void Dijkstra(const Graph& g,int v,vi& dist,vi& prev)
 	}
 }
 
-void BuildPath(const vi& prev,int v,vi& path)
+void BuildPath(const vi& prev,int dst,vi& path)
 {
-	for(int u=v;u!=-1;u=prev[u])
-		path.push_back(u);
+	for(int v=dst;v!=-1;v=prev[v])
+		path.push_back(v);
 	reverse(all(path));
 }
