@@ -1,6 +1,5 @@
 // 点更新/区間質問
 // Verify: POJ 3067, POJ 3928
-
 struct FenwickTree{
 	vector<ll> data;
 	FenwickTree(int n):data(n+1){}
@@ -21,7 +20,6 @@ struct FenwickTree{
 
 // 区間更新/点質問
 // Verify: AOJ 2412, LOJ 1080, POJ 2182
-
 struct FenwickTree{
 	vector<ll> data;
 	FenwickTree(int n):data(n+1){}
@@ -43,7 +41,6 @@ struct FenwickTree{
 
 // 2次元版，点更新/区間質問
 // Verify: POJ 1195
-
 struct FenwickTree2D{
 	vector<FenwickTree> data;
 	FenwickTree2D(int h,int w):data(h+1,FenwickTree(w)){}
@@ -64,7 +61,6 @@ struct FenwickTree2D{
 
 // 2次元版，区間更新/点質問
 // Verify: Codeforces #439(Div.2) Problem E
-
 struct FenwickTree2D{
 	vector<FenwickTree> data;
 	FenwickTree2D(int h,int w):data(h+1,FenwickTree(w)){}
