@@ -61,3 +61,27 @@ struct FenwickTree2D{
 		return Sum(k,l)-Sum(k,j)-Sum(i,l)+Sum(i,j);
 	}
 };
+
+// 2次元版，区間更新/点質問
+// Verify: Codeforces #439(Div.2) Problem E
+
+struct FenwickTree2D{
+	vector<FenwickTree> data;
+	FenwickTree2D(int h,int w):data(h+1,FenwickTree(w)){}
+	void AddRange(int i,int j,int x){
+		for(;i;i-=i&-i)
+			data[i].AddRange(j,x);
+	}
+	void AddRange(int i,int j,int k,int l,int x){
+		AddRange(k,l,x);
+		AddRange(k,j,-x);
+		AddRange(i,l,-x);
+		AddRange(i,j,x);
+	}
+	ll Get(int i,int j){
+		ll res=0;
+		for(i++;i<data.size();i+=i&-i)
+			res+=data[i].Get(j);
+		return res;
+	}
+};
