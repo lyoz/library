@@ -133,102 +133,72 @@ struct SegmentTree{
 	}
 };
 
-// 区間add/区間min
-// Verify: KOJ 0093
+// 区間更新/区間質問
+// data_unit, lazy_unit, Merge, Compose, Resolveを適切に書き換えること
+// 区間の長さが必要ならApplyでコメントアウトしているlenを使えばよい
+// 実装例は区間assign/区間min
+// Verify: AOJ DSL_2_F, DSL_2_G, SPOJ LITE, KCS 7E
 
-template<typename T>
 struct SegmentTree{
+	using T=int;
+	const T data_unit=INT_MAX;  // queryの単位元
+	const T lazy_unit=-1;  // updateの単位元
+	T Merge(T a,T b){
+		return min(a,b);
+	}
+	T Compose(T a,T b){
+		return a!=lazy_unit?a:b;
+	}
+	T Resolve(T l,T d){
+		return l!=lazy_unit?l:d;
+	}
+	int NextPow2(int n){
+		n--;
+		for(int i=1;i<32;i*=2) n|=n>>i;
+		return n+1;
+	}
+
 	int size;
-	vector<T> data,pdata;
-	SegmentTree(int n):size(NextPow2(n)),data(2*size),pdata(2*size){}
-	SegmentTree(const vector<T>& a):size(NextPow2(a.size())),data(2*size),pdata(2*size){
-		copy(all(a),size+begin(data));
-		peri(i,1,size) data[i]=min(data[2*i],data[2*i+1]);
+	vector<T> data,lazy;
+	SegmentTree(int n):size(NextPow2(n)),data(2*size,data_unit),lazy(2*size,lazy_unit){}
+	SegmentTree(const vector<T>& a):size(NextPow2(a.size())),data(2*size,data_unit),lazy(2*size,lazy_unit){
+		copy(all(a),begin(data)+size);
+		peri(i,1,size) data[i]=Merge(data[i*2],data[i*2+1]);
 	}
-	void Propagate(int i){
-		if(i<size){
-			pdata[2*i]+=pdata[i];
-			pdata[2*i+1]+=pdata[i];
-		}
-		data[i]+=pdata[i];
-		pdata[i]=0;
-	}
-	void Update(int ql,int qr,T x,int i,int l,int r){
-		Propagate(i);
-		if(qr<=l || r<=ql) return;
-		if(ql<=l && r<=qr){
-			pdata[i]=x;
-			Propagate(i);
+	void RangeUpdate(int a,int b,T x,int i,int l,int r){
+		if(b<=l||r<=a)
+			return;
+		if(a<=l&&r<=b){
+			Apply(x,i);
 			return;
 		}
-		Update(ql,qr,x,2*i,l,(l+r)/2);
-		Update(ql,qr,x,2*i+1,(l+r)/2,r);
-		data[i]=min(data[2*i],data[2*i+1]);
-	}
-	T Query(int ql,int qr,int i,int l,int r){
 		Propagate(i);
-		if(qr<=l || r<=ql) return INF;
-		if(ql<=l && r<=qr) return data[i];
-		return min(Query(ql,qr,2*i,l,(l+r)/2),Query(ql,qr,2*i+1,(l+r)/2,r));
+		RangeUpdate(a,b,x,i*2,l,(l+r)/2);
+		RangeUpdate(a,b,x,i*2+1,(l+r)/2,r);
+		data[i]=Merge(data[i*2],data[i*2+1]);
 	}
-	void Update(int ql,int qr,T x){Update(ql,qr,x,1,0,size);}
-	T Query(int ql,int qr){return Query(ql,qr,1,0,size);}
+	T RangeQuery(int a,int b,int i,int l,int r){
+		if(b<=l||r<=a) return data_unit;
+		if(a<=l&&r<=b) return data[i];
+		Propagate(i);
+		return Merge(RangeQuery(a,b,i*2,l,(l+r)/2),RangeQuery(a,b,i*2+1,(l+r)/2,r));
+	}
+	void Propagate(int i){
+		Apply(lazy[i],2*i);
+		Apply(lazy[i],2*i+1);
+		lazy[i]=lazy_unit;
+	}
+	void Apply(T x,int i){
+		//int len=size>>(31-__builtin_clz(i));
+		data[i]=Resolve(x,data[i]);
+		lazy[i]=Compose(x,lazy[i]);
+	}
+
+	void RangeUpdate(int a,int b,T x){return RangeUpdate(a,b,x,1,0,size);}
+	T RangeQuery(int a,int b){return RangeQuery(a,b,1,0,size);}
 };
 
 // ------------------------------ 以降は古い実装 ------------------------------
-
-// 区間更新/区間質問．PropagateとMergeを適切に書き換える
-// Verify: SPOJ 7259
-
-struct SegmentTree{
-	int size;
-	vi data,prop;
-	SegmentTree(int s):size(Need(s)),data(size*2),prop(size*2){}
-	SegmentTree(const vi& a):size(Need(a.size())),data(size*2),prop(size*2){
-		copy(all(a),data.begin()+size);
-		for(int i=size;--i;)
-			data[i]=Merge(data[i*2],data[i*2+1]);
-	}
-	void Update(int a,int b,int x,int i,int l,int r){
-		Propagate(i,l,r);
-		if(b<=l || r<=a)
-			return;
-		if(a<=l && r<=b){
-			prop[i]=x;
-			Propagate(i,l,r);
-			return;
-		}
-		Update(a,b,x,i*2+0,l,(l+r)/2);
-		Update(a,b,x,i*2+1,(l+r)/2,r);
-		data[i]=Merge(data[i*2],data[i*2+1]);
-	}
-	ll Query(int a,int b,int i,int l,int r){
-		Propagate(i,l,r);
-		if(b<=l || r<=a) return 0;
-		if(a<=l && r<=b) return data[i];
-		ll x=Query(a,b,i*2+0,l,(l+r)/2);
-		ll y=Query(a,b,i*2+1,(l+r)/2,r);
-		return Merge(x,y);
-	}
-	void Update(int a,int b,int x){
-		Update(a,b,x,1,0,size);
-	}
-	int Query(int a,int b){
-		return Query(a,b,1,0,size);
-	}
-	void Propagate(int i,int l,int r){
-		if(i<size){
-			prop[i*2+0]^=prop[i];
-			prop[i*2+1]^=prop[i];
-		}
-		if(prop[i])
-			data[i]=r-l-data[i];
-		prop[i]=0;
-	}
-	int Merge(ll x,ll y){
-		return x+y;
-	}
-};
 
 // 区間Set,Reset,Flip,Count
 // Verify: UVa 11402, Codeforces 242E
