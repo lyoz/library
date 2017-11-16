@@ -84,6 +84,73 @@ struct SegmentTree{
 	int RangeQueryIndex(int a,int b){return RangeQueryIndex(a,b,1,0,size);}
 };
 
+// 区間更新/区間質問
+// data_unit, lazy_unit, Merge, Compose, Resolveを適切に書き換えること
+// 区間の長さが必要ならApplyでコメントアウトしているlenを使えばよい
+// 実装例は区間assign/区間min
+// Verify: AOJ DSL_2_F, DSL_2_G, SPOJ LITE, KCS 7E
+
+struct SegmentTree{
+	using T=int;
+	const T data_unit=INT_MAX;  // queryの単位元
+	const T lazy_unit=-1;  // updateの単位元
+	T Merge(T a,T b){
+		return min(a,b);
+	}
+	T Compose(T a,T b){
+		return a!=lazy_unit?a:b;
+	}
+	T Resolve(T l,T d){
+		return l!=lazy_unit?l:d;
+	}
+	int NextPow2(int n){
+		n--;
+		for(int i=1;i<32;i*=2) n|=n>>i;
+		return n+1;
+	}
+
+	int size;
+	vector<T> data,lazy;
+	SegmentTree(int n):size(NextPow2(n)),data(2*size,data_unit),lazy(2*size,lazy_unit){}
+	SegmentTree(const vector<T>& a):size(NextPow2(a.size())),data(2*size,data_unit),lazy(2*size,lazy_unit){
+		copy(all(a),begin(data)+size);
+		peri(i,1,size) data[i]=Merge(data[i*2],data[i*2+1]);
+	}
+	void RangeUpdate(int a,int b,T x,int i,int l,int r){
+		if(b<=l||r<=a)
+			return;
+		if(a<=l&&r<=b){
+			Apply(x,i);
+			return;
+		}
+		Propagate(i);
+		RangeUpdate(a,b,x,i*2,l,(l+r)/2);
+		RangeUpdate(a,b,x,i*2+1,(l+r)/2,r);
+		data[i]=Merge(data[i*2],data[i*2+1]);
+	}
+	T RangeQuery(int a,int b,int i,int l,int r){
+		if(b<=l||r<=a) return data_unit;
+		if(a<=l&&r<=b) return data[i];
+		Propagate(i);
+		return Merge(RangeQuery(a,b,i*2,l,(l+r)/2),RangeQuery(a,b,i*2+1,(l+r)/2,r));
+	}
+	void Propagate(int i){
+		Apply(lazy[i],2*i);
+		Apply(lazy[i],2*i+1);
+		lazy[i]=lazy_unit;
+	}
+	void Apply(T x,int i){
+		//int len=size>>(31-__builtin_clz(i));
+		data[i]=Resolve(x,data[i]);
+		lazy[i]=Compose(x,lazy[i]);
+	}
+
+	void RangeUpdate(int a,int b,T x){return RangeUpdate(a,b,x,1,0,size);}
+	T RangeQuery(int a,int b){return RangeQuery(a,b,1,0,size);}
+};
+
+// ------------------------------ 以降は古い実装 ------------------------------
+
 // 共通
 int NextPow2(int x)
 {
@@ -218,73 +285,6 @@ struct SegmentTree{
 		return res;
 	}
 };
-
-// 区間更新/区間質問
-// data_unit, lazy_unit, Merge, Compose, Resolveを適切に書き換えること
-// 区間の長さが必要ならApplyでコメントアウトしているlenを使えばよい
-// 実装例は区間assign/区間min
-// Verify: AOJ DSL_2_F, DSL_2_G, SPOJ LITE, KCS 7E
-
-struct SegmentTree{
-	using T=int;
-	const T data_unit=INT_MAX;  // queryの単位元
-	const T lazy_unit=-1;  // updateの単位元
-	T Merge(T a,T b){
-		return min(a,b);
-	}
-	T Compose(T a,T b){
-		return a!=lazy_unit?a:b;
-	}
-	T Resolve(T l,T d){
-		return l!=lazy_unit?l:d;
-	}
-	int NextPow2(int n){
-		n--;
-		for(int i=1;i<32;i*=2) n|=n>>i;
-		return n+1;
-	}
-
-	int size;
-	vector<T> data,lazy;
-	SegmentTree(int n):size(NextPow2(n)),data(2*size,data_unit),lazy(2*size,lazy_unit){}
-	SegmentTree(const vector<T>& a):size(NextPow2(a.size())),data(2*size,data_unit),lazy(2*size,lazy_unit){
-		copy(all(a),begin(data)+size);
-		peri(i,1,size) data[i]=Merge(data[i*2],data[i*2+1]);
-	}
-	void RangeUpdate(int a,int b,T x,int i,int l,int r){
-		if(b<=l||r<=a)
-			return;
-		if(a<=l&&r<=b){
-			Apply(x,i);
-			return;
-		}
-		Propagate(i);
-		RangeUpdate(a,b,x,i*2,l,(l+r)/2);
-		RangeUpdate(a,b,x,i*2+1,(l+r)/2,r);
-		data[i]=Merge(data[i*2],data[i*2+1]);
-	}
-	T RangeQuery(int a,int b,int i,int l,int r){
-		if(b<=l||r<=a) return data_unit;
-		if(a<=l&&r<=b) return data[i];
-		Propagate(i);
-		return Merge(RangeQuery(a,b,i*2,l,(l+r)/2),RangeQuery(a,b,i*2+1,(l+r)/2,r));
-	}
-	void Propagate(int i){
-		Apply(lazy[i],2*i);
-		Apply(lazy[i],2*i+1);
-		lazy[i]=lazy_unit;
-	}
-	void Apply(T x,int i){
-		//int len=size>>(31-__builtin_clz(i));
-		data[i]=Resolve(x,data[i]);
-		lazy[i]=Compose(x,lazy[i]);
-	}
-
-	void RangeUpdate(int a,int b,T x){return RangeUpdate(a,b,x,1,0,size);}
-	T RangeQuery(int a,int b){return RangeQuery(a,b,1,0,size);}
-};
-
-// ------------------------------ 以降は古い実装 ------------------------------
 
 // 区間Set,Reset,Flip,Count
 // Verify: UVa 11402, Codeforces 242E
