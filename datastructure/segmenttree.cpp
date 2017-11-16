@@ -1,3 +1,89 @@
+// 点更新/区間質問
+// 実装例は点assign/区間sum
+// Verify: Cf#250 Div1 D
+struct SegmentTree{
+	using T=ll;
+	const T data_unit=0;
+	T Merge(T a,T b){
+		return a+b;
+	}
+	T Apply(T x,T d){
+		return x;
+	}
+	int NextPow2(int n){
+		n--;
+		for(int i=1;i<32;i*=2) n|=n>>i;
+		return n+1;
+	}
+
+	int size;
+	vector<T> data;
+	SegmentTree(int n):size(NextPow2(n)),data(2*size,data_unit){}
+	SegmentTree(const vector<T>& a):size(NextPow2(a.size())),data(2*size,data_unit){
+		copy(all(a),begin(data)+size);
+		peri(i,1,size) data[i]=Merge(data[i*2],data[i*2+1]);
+	}
+	void PointUpdate(int i,T x){
+		data[size+i]=Apply(x,data[size+i]);
+		for(i+=size;i/=2;) data[i]=Merge(data[i*2],data[i*2+1]);
+	}
+	T RangeQuery(int a,int b,int i,int l,int r){
+		if(b<=l||r<=a) return data_unit;
+		if(a<=l&&r<=b) return data[i];
+		return Merge(RangeQuery(a,b,i*2,l,(l+r)/2),RangeQuery(a,b,i*2+1,(l+r)/2,r));
+	}
+	T RangeQuery(int a,int b){return RangeQuery(a,b,1,0,size);}
+};
+
+// 点更新/区間質問(インデックスを返す)
+// 実装例は点assign/区間max
+// Verify: Cf#250 Div1 D
+struct SegmentTree{
+	using T=ll;
+	const T data_unit=-1;
+	T Merge(T a,T b){
+		return max(a,b);
+	}
+	T Apply(T x,T d){
+		return x;
+	}
+	int NextPow2(int n){
+		n--;
+		for(int i=1;i<32;i*=2) n|=n>>i;
+		return n+1;
+	}
+
+	int size;
+	vector<T> data,index;
+	SegmentTree(int n):size(NextPow2(n)),data(2*size,data_unit),index(2*size,-1){
+		iota(begin(index)+size,begin(index)+size+n,0);
+		peri(i,1,size) index[i]=index[i*2];
+	}
+	SegmentTree(const vector<T>& a):size(NextPow2(a.size())),data(2*size,data_unit),index(2*size,-1){
+		copy(all(a),begin(data)+size);
+		peri(i,1,size) data[i]=Merge(data[i*2],data[i*2+1]);
+		iota(begin(index)+size,begin(index)+size+a.size(),0);
+		peri(i,1,size) index[i]=Merge(data[i*2],data[i*2+1])==data[i*2]?index[i*2]:index[i*2+1];
+	}
+	void PointUpdate(int i,T x){
+		data[size+i]=Apply(x,data[size+i]);
+		for(i+=size;i/=2;){
+			data[i]=Merge(data[i*2],data[i*2+1]);
+			index[i]=data[i]==data[i*2]?index[i*2]:index[i*2+1];
+		}
+	}
+	T Get(int i){
+		return data[size+i];
+	}
+	int RangeQueryIndex(int a,int b,int i,int l,int r){
+		if(b<=l||r<=a) return -1;
+		if(a<=l&&r<=b) return index[i];
+		int u=RangeQueryIndex(a,b,i*2,l,(l+r)/2),v=RangeQueryIndex(a,b,i*2+1,(l+r)/2,r);
+		return v==-1||Merge(Get(u),Get(v))==Get(u)?u:v;
+	}
+	int RangeQueryIndex(int a,int b){return RangeQueryIndex(a,b,1,0,size);}
+};
+
 // 共通
 int NextPow2(int x)
 {
