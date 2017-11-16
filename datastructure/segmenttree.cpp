@@ -89,7 +89,6 @@ struct SegmentTree{
 // 区間の長さが必要ならApplyでコメントアウトしているlenを使えばよい
 // 実装例は区間assign/区間min
 // Verify: AOJ DSL_2_F, DSL_2_G, SPOJ LITE, KCS 7E
-
 struct SegmentTree{
 	using T=int;
 	const T data_unit=INT_MAX;  // queryの単位元
@@ -163,7 +162,6 @@ int F(int a,int b){return min(a,b);}
 
 // 点更新/区間質問
 // Verify: UVa 12299, POJ 3264, AOJ 1068
-
 struct SegmentTree{
 	int size;
 	vi data;
@@ -192,7 +190,6 @@ struct SegmentTree{
 // 点更新/区間質問
 // QueryIndex()で対応するインデックスを返す
 // Verify: AOJ DSL_2_A
-
 struct SegmentTree{
 	int size;
 	vi data,index;
@@ -229,7 +226,6 @@ struct SegmentTree{
 
 // 点更新/区間質問 (2次元版)
 // Verify: AOJ 1068
-
 struct SegmentTree2D{
 	int size;
 	vector<SegmentTree> data;
@@ -259,7 +255,6 @@ struct SegmentTree2D{
 
 // 区間更新/点質問
 // Verify: ARC026 C
-
 struct SegmentTree{
 	int size;
 	vi data;
@@ -288,7 +283,6 @@ struct SegmentTree{
 
 // 区間Set,Reset,Flip,Count
 // Verify: UVa 11402, Codeforces 242E
-
 struct SegmentTree{
 	int size;
 	vi data,prop;
