@@ -73,13 +73,13 @@ struct SegmentTree{
 		}
 	}
 	T Get(int i){
-		return data[size+i];
+		return i==-1?data_unit:data[size+i];
 	}
 	int RangeQueryIndex(int a,int b,int i,int l,int r){
 		if(b<=l||r<=a) return -1;
 		if(a<=l&&r<=b) return index[i];
 		int u=RangeQueryIndex(a,b,i*2,l,(l+r)/2),v=RangeQueryIndex(a,b,i*2+1,(l+r)/2,r);
-		return v==-1||Merge(Get(u),Get(v))==Get(u)?u:v;
+		return Merge(Get(u),Get(v))==Get(u)?u:v;
 	}
 	int RangeQueryIndex(int a,int b){return RangeQueryIndex(a,b,1,0,size);}
 };
