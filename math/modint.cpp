@@ -1,7 +1,7 @@
 template<uint M>
 struct modint{
 	uint val;
-	modint(uint x=0):val((x%M+M)%M){}
+	modint(ll x):val((x%M+M)%M){}
 	modint pow(uint r)const{
 		ll a=val,x=1;
 		for(;r;r>>=1){
@@ -20,7 +20,6 @@ struct modint{
 		}
 		return (x+M)%M;
 	}
-	modint& operator=(const modint& x)&{val=x.val; return *this;}
 	modint& operator+=(const modint& x)&{if((val+=x.val)>=M) val-=M; return *this;}
 	modint& operator-=(const modint& x)&{if((val+=M-x.val)>=M) val-=M; return *this;}
 	modint& operator*=(const modint& x)&{val=(ll)val*x.val%M; return *this;}
