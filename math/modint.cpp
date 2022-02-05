@@ -26,14 +26,13 @@ struct modint{
 	modint& operator*=(const modint& x)&{val=(ll)val*x.val%M; return *this;}
 	modint& operator/=(const modint& x)&{val=(ll)val*x.inv().val%M; return *this;}
 	explicit operator uint()const{return val;}
+	friend bool operator==(const modint& a,const modint& b){return a.val==b.val;}
+	friend bool operator!=(const modint& a,const modint& b){return a.val!=b.val;}
+	friend modint operator+(modint a,const modint& b){a+=b; return a;}
+	friend modint operator-(modint a,const modint& b){a-=b; return a;}
+	friend modint operator*(modint a,const modint& b){a*=b; return a;}
+	friend modint operator/(modint a,const modint& b){a/=b; return a;}
+	friend ostream& operator<<(ostream& os,const modint& x){return os<<x.val;}
 };
-
-template<uint M> bool operator==(const modint<M>& a,const modint<M>& b){return a.val==b.val;}
-template<uint M> bool operator!=(const modint<M>& a,const modint<M>& b){return a.val!=b.val;}
-template<uint M> modint<M> operator+(modint<M> a,const modint<M>& b){a+=b; return a;}
-template<uint M> modint<M> operator-(modint<M> a,const modint<M>& b){a-=b; return a;}
-template<uint M> modint<M> operator*(modint<M> a,const modint<M>& b){a*=b; return a;}
-template<uint M> modint<M> operator/(modint<M> a,const modint<M>& b){a/=b; return a;}
-template<uint M> ostream& operator<<(ostream& os,const modint<M>& x){return os<<x.val;}
 
 using mint=modint<MOD>;
